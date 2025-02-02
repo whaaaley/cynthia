@@ -22,6 +22,12 @@ Using Cynthia is like writing unit tests... but without implementing anything to
 
 Just like database migrations!
 
+1. Create a `.cynthia` dir, or do this yourself with `mkdir -p`
+
+```sh
+cyn init
+```
+
 1. Create a `.cyn.ts` file: (cyn - pronounced "sin" /sɪn/)
 
 ```sh
