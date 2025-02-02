@@ -35,7 +35,8 @@ This creates `apple-bottom-jeans.cyn.ts` in the CWD with a starter template.
 What does this function do? No idea! That's Cynthia's job.*
 
 ```ts
-import { createTestSuites } from 'cynthia'
+import { createTestSuites, runTestSuites } from 'cynthia'
+import testFn from './hello-world.ts' // This will be generated for you later, you still need to import it though
 
 const t = createTestSuites()
 
@@ -66,6 +67,8 @@ t.describe('Fruit Tests', () => {
     })
   })
 })
+
+runTestSuites(t.getState(), testFn)
 
 export default t.getState()
 ```
