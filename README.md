@@ -4,13 +4,13 @@ A proof of concept code synthesis command line tool.
 
 ## Roadmap
 
-- [] Benchmarks and performance thresholds
-- [] Rollbacks
-- [] Status command
-- [] Add more models + DeepSeek R1 by default
-- [] Add Go language support
-- [] Personalization
-- [] Prompt user to generate initial tests
+- [ ] Benchmarks and performance thresholds
+- [ ] Rollbacks
+- [ ] Status command
+- [ ] Add more models + DeepSeek R1 by default
+- [ ] Add Go language support
+- [ ] Personalization
+- [ ] Prompt user to generate initial tests
 
 ## Why?
 
