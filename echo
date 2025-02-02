@@ -1,0 +1,49 @@
+modFilePath /home/nixos/cynthia/hello-world.cyn.ts
+Synthesizing TypeScript from test suites...
+mod [Module: null prototype] {
+  default: {
+    suites: [
+      {
+        name: "Fruit Tests",
+        tests: [ [Object], [Object], [Object], [Object] ]
+      }
+    ]
+  }
+}
+Synthesized output: export default function identifyFood(name: string, properties?: { type: string; color: string }): string | boolean {
+    const fruits = ['apple', 'banana', 'orange'];
+    if (fruits.includes(name)) {
+        if (properties) {
+            return properties.type === 'fruit' && properties.color === 'red';
+        }
+        return 'fruit';
+    }
+    return false;
+}
+Running tests...
+genFilePath /home/nixos/cynthia/.cynthia/1738466160497-hello-world.gen.ts
+mod.default.suites {
+  suites: [
+    {
+      name: "Fruit Tests",
+      tests: [
+        {
+          name: "should identify an apple as a fruit",
+          expects: [Array]
+        },
+        {
+          name: "should not identify a carrot as a fruit",
+          expects: [Array]
+        },
+        {
+          name: "should match fruit object properties",
+          expects: [Array]
+        },
+        {
+          name: "should not match vegetable object properties",
+          expects: [Array]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "cynthia",
+  "version": "0.0.1",
+  "bin": {
+    "cyn": "./main.ts"
+  },
+  "tasks": {
+    "link": "sh -c 'ln -sf \"$(pwd)/cyn.sh\" ~/.deno/bin/cyn && chmod +x ~/.deno/bin/cyn'"
+  },
+  "fmt": {
+    "lineWidth": 240,
+    "semiColons": false,
+    "singleQuote": true
+  },
+  "imports": {
+    "@openai/openai": "jsr:@openai/openai@^4.81.0",
+    "@std/cli": "jsr:@std/cli@^1.0.11",
+    "@std/expect": "jsr:@std/expect@^1.0.12",
+    "@std/fs": "jsr:@std/fs@^1.0.10",
+    "@std/path": "jsr:@std/path@^1.0.8",
+    "@std/testing": "jsr:@std/testing@^1.0.9",
+    "zod": "npm:zod@^3.24.1",
+    "cynthia": "./main.ts"
+  },
+  "exports": {
+    ".": "./main.ts"
+  }
+}
