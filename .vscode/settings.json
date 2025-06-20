@@ -3,7 +3,7 @@
   "deno.lint": true,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "always",
+    "source.organizeImports": "always"
   },
   "[javascript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"

@@ -17,7 +17,8 @@ export function createTestSuites() {
 
   const it = (name: string, fn: () => void) => {
     if (!currentSuite) {
-      throw new Error('No active suite')
+      console.error('No active suite - call describe() first')
+      return
     }
 
     currentSuite.tests.push({ name, expects: [] })
@@ -26,7 +27,15 @@ export function createTestSuites() {
 
   const expect = (input: unknown[]) => {
     if (!currentSuite) {
-      throw new Error('No active suite')
+      console.error('No active suite - call describe() first')
+      return {
+        toBe: () => {},
+        toMatchObject: () => {},
+        not: {
+          toBe: () => {},
+          toMatchObject: () => {},
+        },
+      }
     }
 
     const currentTest = currentSuite.tests[currentSuite.tests.length - 1]

@@ -44,11 +44,18 @@ export const synthesize = async (suites: Suite[], cwd?: string) => {
   const { content } = choice.message
 
   if (typeof content !== 'string') {
-    throw new Error('Invalid response format')
+    console.error('Invalid response format from OpenAI')
+    return { code: '', prompt: userPrompt }
   }
 
-  return {
-    code: JSON.parse(content).code ?? '',
-    prompt: userPrompt,
+  try {
+    const parsed = JSON.parse(content)
+    return {
+      code: parsed.code ?? '',
+      prompt: userPrompt,
+    }
+  } catch (e) {
+    console.error('Failed to parse OpenAI response:', e)
+    return { code: '', prompt: userPrompt }
   }
 }

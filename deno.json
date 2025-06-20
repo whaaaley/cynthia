@@ -1,12 +1,18 @@
 {
   "name": "cynthia",
   "version": "0.0.1",
+  "exports": {
+    ".": "./src/lib/mod.ts",
+    "./cli": "./src/cli.ts"
+  },
   "bin": {
-    "cyn": "./main.ts"
+    "cyn": "./bin/cyn.ts"
   },
   "tasks": {
-    "install": "deno install -Afn cyn --global --config deno.json ./main.ts",
-    "link": "sh -c 'ln -sf \"$(pwd)/cyn.sh\" ~/.deno/bin/cyn && chmod +x ~/.deno/bin/cyn'"
+    "dev": "deno run --allow-all ./bin/cyn.ts",
+    "build": "deno compile --allow-all --output cyn ./bin/cyn.ts",
+    "install": "deno install --global --allow-all --name cyn ./bin/cyn.ts",
+    "test": "deno test --allow-all"
   },
   "fmt": {
     "lineWidth": 240,
@@ -21,10 +27,6 @@
     "@std/path": "jsr:@std/path@^1.0.8",
     "@std/testing": "jsr:@std/testing@^1.0.9",
     "find-up-simple": "npm:find-up-simple@^1.0.1",
-    "zod": "npm:zod@^3.24.1",
-    "cynthia": "./main.ts"
-  },
-  "exports": {
-    ".": "./main.ts"
+    "zod": "npm:zod@^3.24.1"
   }
 }

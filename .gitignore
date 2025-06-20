@@ -1,6 +1,14 @@
-_trash
-.cynthia
+_trash/
+.cynthia/
+tmp/
 
 .env
 hello-world.cyn.ts
 hello-world.ts
+
+# Build outputs
+cyn
+cyn.exe
+
+# Manual testing guide
+manual-testing.md

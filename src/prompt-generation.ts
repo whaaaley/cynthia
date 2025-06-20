@@ -53,7 +53,8 @@ const formatExpectation = (expectation: Expectation): string => {
     .find((k) => k in EXPECTATION_FORMATTERS) as keyof typeof EXPECTATION_FORMATTERS
 
   if (!key) {
-    throw new Error(`Invalid expectation: no valid matcher found in ${JSON.stringify(expectation)}`)
+    console.error(`Invalid expectation: no valid matcher found in ${JSON.stringify(expectation)}`)
+    return ''
   }
 
   return EXPECTATION_FORMATTERS[key](inputStr, expectation[key])
