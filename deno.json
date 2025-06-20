@@ -5,6 +5,7 @@
     "cyn": "./main.ts"
   },
   "tasks": {
+    "install": "deno install -Afn cyn --global --config deno.json ./main.ts",
     "link": "sh -c 'ln -sf \"$(pwd)/cyn.sh\" ~/.deno/bin/cyn && chmod +x ~/.deno/bin/cyn'"
   },
   "fmt": {

@@ -8,7 +8,6 @@ A proof of concept code synthesis command line tool.
 - [ ] Rollbacks
 - [ ] Status command
 - [ ] Add more models + DeepSeek R1 by default
-- [ ] Add Go language support
 - [ ] Personalization
 - [ ] Prompt user to generate initial tests
 
