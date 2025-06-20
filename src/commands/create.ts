@@ -10,18 +10,15 @@ export const createCommand = async (args: string[]) => {
   try {
     const content = createTestFileTemplate(filename)
     const file = new TextEncoder().encode(content)
+
     await Deno.writeFile(`./${filename}.cyn.ts`, file, { create: true })
     console.log(`Created ${filename}.cyn.ts`)
 
     // Create placeholder implementation file so imports don't break
     const placeholderContent = [
-      '// Placeholder file - will be replaced by cyn gen',
-      "// This file exists so the .cyn.ts import doesn't break",
-      '',
       'export default () => {',
       `  throw new Error('Implementation not generated yet. Run: cyn gen ${filename}.cyn.ts')`,
       '}',
-      '',
     ].join('\n')
 
     const placeholderFile = new TextEncoder().encode(placeholderContent)

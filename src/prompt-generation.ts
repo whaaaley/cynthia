@@ -33,10 +33,8 @@ export const generateSystemPrompt = (personalInstructions: string[] = []) => {
   return coreInstructions.join('\n')
 }
 
-const format = (operator: string) => {
-  return (inputStr: string, value: unknown): string => {
-    return `  I expect the function, with the arguments \`${inputStr.slice(1, -1)}\`, ${operator} \`${JSON.stringify(value)}\``
-  }
+const format = (operator: string) => (inputStr: string, value: unknown) => {
+  return `  I expect the function, with the arguments \`${inputStr.slice(1, -1)}\`, ${operator} \`${JSON.stringify(value)}\``
 }
 
 const EXPECTATION_FORMATTERS = {
@@ -46,7 +44,7 @@ const EXPECTATION_FORMATTERS = {
   'not.toMatchObject': format('not to match the object'),
 } as const
 
-const formatExpectation = (expectation: Expectation): string => {
+const formatExpectation = (expectation: Expectation) => {
   const inputStr = JSON.stringify(expectation.input)
 
   const key = Object.keys(expectation)
@@ -60,7 +58,7 @@ const formatExpectation = (expectation: Expectation): string => {
   return EXPECTATION_FORMATTERS[key](inputStr, expectation[key])
 }
 
-export const generateUserPrompt = (suites: Suite[]): string => {
+export const generateUserPrompt = (suites: Suite[]) => {
   const formattedSuites = suites.map((suite) => {
     const formattedTests = suite.tests.map((test) => {
       const formattedExpectations = test.expects

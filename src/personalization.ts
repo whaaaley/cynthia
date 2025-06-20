@@ -1,6 +1,6 @@
 import { findUp } from 'find-up-simple'
 
-export const readPersonalizationInstructions = async (cwd?: string): Promise<string[]> => {
+export const readPersonalizationInstructions = async (cwd?: string) => {
   const instructionsPath = await findUp('.vscode/instructions/cynthia.instructions.md', { cwd })
 
   if (!instructionsPath) {

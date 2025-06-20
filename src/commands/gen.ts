@@ -3,23 +3,13 @@ import { findUp } from 'find-up-simple'
 import { loadConfig } from '../config.ts'
 import { synthesize } from '../openai-code-synthesis.ts'
 import { retryWithCallback } from '../utils/retry.ts'
-
-// Test runner that returns success status
-const runTests = async (testFilePath: string): Promise<boolean> => {
-  const process = new Deno.Command('deno', { args: ['test', '-A', testFilePath] })
-  const output = await process.output()
-
-  if (output.stdout.length > 0) await Deno.stdout.write(output.stdout)
-  if (output.stderr.length > 0) await Deno.stderr.write(output.stderr)
-
-  return output.code === 0
-}
+import { runDenoTests } from '../utils/test-runner.ts'
 
 export const genCommand = async (args: string[]) => {
   const path = args[0]
   if (!path) {
     console.error('Error: filepath is required')
-    return
+    return // Exit early if no path is provided
   }
 
   try {
@@ -34,12 +24,10 @@ export const genCommand = async (args: string[]) => {
     const cynthiaDir = await findUp('.cynthia', { cwd, type: 'directory' })
     if (!cynthiaDir) {
       console.error('No .cynthia directory found. Run "cyn init" first.')
-      return
+      return // Exit early if no .cynthia directory
     }
 
-    // Define callback functions
     const generateAndTest = async () => {
-      // Generate code
       const result = await synthesize(mod.default.suites, cwd)
 
       if (!result.code || !result.code.trim()) {
@@ -60,17 +48,17 @@ export const genCommand = async (args: string[]) => {
 
       // Run tests if configured
       if (config.testing.runTestsAfterGeneration) {
-        const testsPass = await runTests(fullPath)
-        return { testsPass }
-      } else {
-        // If we're not running tests, consider it successful
-        return { testsPass: true }
+        const exitCode = await runDenoTests(fullPath)
+        return { testsPass: exitCode === 0 }
       }
+
+      // If we're not running tests, consider it successful
+      return { testsPass: true }
     }
 
     const validateSuccess = (result: { testsPass: boolean }) => result.testsPass
 
-    // Agentic retry loop: generate code and validate with tests
+    // Retry generation until tests pass
     await retryWithCallback({
       operation: generateAndTest,
       isSuccess: validateSuccess,

@@ -17,7 +17,7 @@ A code synthesis command line tool that brings structure to AI-powered developme
 
 - [ ] Benchmarks and performance thresholds
 - [ ] Add more models + DeepSeek R1 by default (Use Unified AI SDK)
-- [ ] Cucumber/Gherkin support
+- [ ] Pivot from Deno test and bdd to Cucumber/Gherkin
 - [ ] Prompt user to generate initial tests using LLM
 - [ ] Add a journal feature similar to drizzle-journal (status, history, rollbacks)
 

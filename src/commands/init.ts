@@ -3,6 +3,18 @@ import { ensureDir } from '@std/fs/ensure-dir'
 import { join } from '@std/path'
 import { createConfigTemplate } from '../templates.ts'
 
+const createConfigFile = async (cwd: string) => {
+  const configPath = join(cwd, 'cynthia.config.ts')
+  if (await exists(configPath)) {
+    console.log('Configuration file already exists')
+    return // Exit early if config file already exists
+  }
+
+  const configContent = createConfigTemplate()
+  await Deno.writeTextFile(configPath, configContent)
+  console.log(`Created configuration file: ${configPath}`)
+}
+
 export const initCommand = async () => {
   try {
     const cwd = Deno.cwd()
@@ -12,14 +24,7 @@ export const initCommand = async () => {
     console.log('Created .cynthia directory')
 
     // Create config file if it doesn't exist
-    const configPath = join(cwd, 'cynthia.config.ts')
-    if (!await exists(configPath)) {
-      const configContent = createConfigTemplate()
-      await Deno.writeTextFile(configPath, configContent)
-      console.log(`Created configuration file: ${configPath}`)
-    } else {
-      console.log('Configuration file already exists')
-    }
+    await createConfigFile(cwd)
 
     console.log('\nCynthia project initialized successfully!')
     console.log('Next steps:')

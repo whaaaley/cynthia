@@ -2,7 +2,7 @@ import { expect } from 'jsr:@std/expect'
 import { describe, it } from 'jsr:@std/testing/bdd'
 import type { Suite, TestState } from './types.ts'
 
-export function createTestSuites() {
+export const createTestSuites = () => {
   const state: TestState = {
     suites: [],
   }
@@ -18,7 +18,7 @@ export function createTestSuites() {
   const it = (name: string, fn: () => void) => {
     if (!currentSuite) {
       console.error('Error: no active suite - call describe() first')
-      return
+      return // Exit early if no active suite
     }
 
     currentSuite.tests.push({ name, expects: [] })

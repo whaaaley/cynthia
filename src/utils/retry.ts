@@ -1,5 +1,3 @@
-// Generic retry utility
-
 export type RetryOptions<T> = {
   operation: () => Promise<T>
   isSuccess: (result: T) => boolean
@@ -7,20 +5,20 @@ export type RetryOptions<T> = {
   operationName: string
 }
 
-export const retryWithCallback = async <T,>(options: RetryOptions<T>): Promise<T> => {
+export const retryWithCallback = async <T,>(options: RetryOptions<T>) => {
   const { operation, isSuccess, maxRetries, operationName } = options
-  let attempt = 0
+  console.log(`${operationName}...`)
 
+  let attempt = 0
   while (attempt <= maxRetries) {
     try {
-      const message = attempt === 0 ? `${operationName}...` : `Retrying ${operationName.toLowerCase()}... (attempt ${attempt + 1}/${maxRetries + 1})`
-      console.log(message)
+      console.log(`Retrying ${operationName.toLowerCase()}... (attempt ${attempt}/${maxRetries + 1})`)
 
       const result = await operation()
-
       if (isSuccess(result)) {
         return result
       }
+
       throw new Error(`${operationName} failed validation`)
     } catch (e) {
       attempt++
@@ -31,6 +29,4 @@ export const retryWithCallback = async <T,>(options: RetryOptions<T>): Promise<T
       console.error(`${operationName} attempt ${attempt} failed:`, e)
     }
   }
-
-  throw new Error('Unexpected error in retry logic')
 }

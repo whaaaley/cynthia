@@ -21,3 +21,5 @@ In try/catch blocks, use 'e' as error parameter name and pass 'e' directly to co
 Keep function parameters on one line unless they exceed line width limits.
 
 Define callback functions as const arrow functions before passing to other functions instead of inline.
+
+Empty early returns must have a comment explaining why the function is exiting.

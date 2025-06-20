@@ -1,10 +1,11 @@
 import { join } from '@std/path'
+import { runDenoTests } from '../utils/test-runner.ts'
 
 export const testCommand = async (args: string[]) => {
   const path = args[0]
   if (!path) {
     console.error('Error: filepath is required')
-    return
+    return // Exit early if no path is provided
   }
 
   try {
@@ -12,13 +13,9 @@ export const testCommand = async (args: string[]) => {
     const fullPath = join(cwd, path)
 
     console.log('Running tests...')
-    const process = new Deno.Command('deno', { args: ['test', '-A', fullPath] })
-    const output = await process.output()
+    const exitCode = await runDenoTests(fullPath)
 
-    if (output.stdout.length > 0) await Deno.stdout.write(output.stdout)
-    if (output.stderr.length > 0) await Deno.stderr.write(output.stderr)
-
-    Deno.exit(output.code)
+    Deno.exit(exitCode)
   } catch (e) {
     console.error('Error running tests:', e)
   }
