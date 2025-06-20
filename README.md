@@ -2,13 +2,23 @@
 
 A proof of concept code synthesis command line tool.
 
+## Table of Contents
+
+- [Roadmap](#roadmap)
+- [Why?](#why)
+- [How do generations work?](#how-do-generations-work)
+- [Personalization](#personalization)
+- [Installation](#installation)
+- [FAQ](#faq)
+- [Warning from the Author](#warning-from-the-author)
+
 ## Roadmap
 
 - [ ] Benchmarks and performance thresholds
 - [ ] Rollbacks
 - [ ] Status command
 - [ ] Add more models + DeepSeek R1 by default
-- [ ] Personalization
+- [ ] Cucumber/Gherkin support
 - [ ] Prompt user to generate initial tests
 
 ## Why?
@@ -101,6 +111,31 @@ import appleBottomJeans from './apple-bottom-jeans.ts'
 console.log(appleBottomJeans(['apple']))
 // => 'fruit'
 ```
+
+## Personalization
+
+Customize code generation with personalized instructions.
+
+### Setup
+
+```sh
+mkdir -p .vscode/instructions
+touch .vscode/instructions/cynthia.instructions.md
+```
+
+Add instructions, one per line:
+
+```
+Use functional programming patterns
+Use descriptive variable names
+Prefer map, filter, reduce over loops
+Use type guards for runtime checks
+Use switch for multiple conditions
+```
+
+### Behavior
+
+Cynthia searches for `.vscode/instructions/cynthia.instructions.md` by walking up the directory tree from the current working directory. Instructions are added to the code generation prompt. Works from any subdirectory.
 
 ## Installation
 

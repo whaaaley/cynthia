@@ -1,10 +1,11 @@
 import OpenAI from '@openai/openai'
 import { zodResponseFormat } from '@openai/openai/helpers/zod'
 import { z } from 'zod'
+import { readPersonalizationInstructions } from './personalization.ts'
 import type { Expectation, Suite } from './types.ts'
 
-const systemPrompt = () => {
-  return [
+const systemPrompt = (personalInstructions: string[] = []) => {
+  const coreInstructions = [
     // Core role and objective
     'You are an expert TypeScript developer.',
     'Your task is to write a TypeScript function that strictly adheres to the test specifications.',
@@ -21,7 +22,18 @@ const systemPrompt = () => {
     'Write clean, efficient, and maintainable code.',
     'Keep the implementation simple and focused.',
     'Follow TypeScript best practices and patterns.',
-  ].join('\n')
+  ]
+
+  if (personalInstructions.length > 0) {
+    const personalSection = [
+      'Additional personalization instructions:',
+      ...personalInstructions,
+    ]
+
+    return [...coreInstructions, ...personalSection].join('\n')
+  }
+
+  return coreInstructions.join('\n')
 }
 
 const format = (operator: string) => {
@@ -81,16 +93,22 @@ const responseSchema = zodResponseFormat(
   'typescript_function',
 )
 
-export const synthesize = async (suites: Suite[]) => {
+export const synthesize = async (suites: Suite[], cwd?: string) => {
   const client = new OpenAI({ apiKey: Deno.env.get('OPENAI_API_KEY') })
 
   console.log('Synthesizing TypeScript from test suites...')
+
+  // Read personalization instructions
+  const personalInstructions = await readPersonalizationInstructions(cwd)
+  if (personalInstructions.length > 0) {
+    console.log('Using personalization instructions from .vscode/instructions/cynthia.instructions.md')
+  }
 
   const prompt = userPrompt(suites)
   const response = await client.chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [
-      { role: 'system', content: systemPrompt() },
+      { role: 'system', content: systemPrompt(personalInstructions) },
       { role: 'user', content: prompt },
     ],
     response_format: responseSchema,
