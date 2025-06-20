@@ -17,7 +17,7 @@ A proof of concept code synthesis command line tool.
 - [ ] Benchmarks and performance thresholds
 - [ ] Rollbacks
 - [ ] Status command
-- [ ] Add more models + DeepSeek R1 by default
+- [ ] Add more models + DeepSeek R1 by default (Use Unified AI SDK)
 - [ ] Cucumber/Gherkin support
 - [ ] Prompt user to generate initial tests
 - [ ] Add config file
