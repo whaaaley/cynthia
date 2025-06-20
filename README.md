@@ -1,12 +1,13 @@
 # Cynthia
 
-A proof of concept code synthesis command line tool.
+A proof of concept code synthesis command line tool. The CLI command is `cyn` (pronounced "sin" /sɪn/).
 
 ## Table of Contents
 
 - [Roadmap](#roadmap)
 - [Why?](#why)
 - [How do generations work?](#how-do-generations-work)
+- [Configuration](#configuration)
 - [Personalization](#personalization)
 - [Installation](#installation)
 - [FAQ](#faq)
@@ -20,7 +21,8 @@ A proof of concept code synthesis command line tool.
 - [ ] Add more models + DeepSeek R1 by default (Use Unified AI SDK)
 - [ ] Cucumber/Gherkin support
 - [ ] Prompt user to generate initial tests
-- [ ] Add config file
+- [ ] Add generation retries (agentic)
+- [ ] Add a journal feature similar to drizzle-journal
 
 ## Why?
 
@@ -32,13 +34,15 @@ Using Cynthia is like writing unit tests... but without implementing anything to
 
 Just like database migrations!
 
-1. Create a `.cynthia` dir, or do this yourself with `mkdir -p`
+1. Initialize your project:
 
 ```sh
 cyn init
 ```
 
-1. Create a `.cyn.ts` file: (cyn - pronounced "sin" /sɪn/)
+This creates a `cynthia.config.ts` file with default settings and a `.cynthia` directory.
+
+1. Create a `.cyn.ts` file:
 
 ```sh
 cyn create apple-bottom-jeans
@@ -97,7 +101,7 @@ Ensure that you have your `OPENAI_API_KEY` in your environment:
 export OPENAI_API_KEY="your-api-key-here"
 ```
 
-Get your API key from [OpenAI's platform](https://platform.openai.com/api-keys). The model is `gpt-4o-mini` and it's currently not configurable.
+Get your API key from [OpenAI's platform](https://platform.openai.com/api-keys). The default model is `gpt-4o-mini` but this can be configured (see [Configuration](#configuration) section).
 
 ```sh
 cyn gen apple-bottom-jeans.cyn.ts
@@ -118,6 +122,30 @@ import appleBottomJeans from './apple-bottom-jeans.ts'
 console.log(appleBottomJeans(['apple']))
 // => 'fruit'
 ```
+
+## Configuration
+
+Cynthia can be configured using a `cynthia.config.ts` file in your project root.
+
+### Configuration Options
+
+#### OpenAI Settings
+
+- `model`: OpenAI model to use (default: 'gpt-4o-mini')
+- `temperature`: Controls randomness (0.0-2.0, default: 0.1)
+- `maxTokens`: Optional token limit for responses
+
+#### Generation Settings
+
+- `maxRetries`: Number of generation retries on failure (default: 3)
+
+#### Testing Settings
+
+- `runTestsAfterGeneration`: Automatically run tests after generation (default: true)
+
+#### CLI Settings
+
+- `confirmGenerations`: Prompt for confirmation before generating (default: false)
 
 ## Personalization
 

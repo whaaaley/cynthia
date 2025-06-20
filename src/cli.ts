@@ -15,7 +15,7 @@ Cynthia CLI
 Commands:
   create <filename>   Create new test file with boilerplate
   gen <filepath>      Generate code from tests
-  init                Create .cynthia dir in current directory
+  init                Initialize Cynthia project (.cynthia dir + config)
   test <filepath>     Run tests
 
 Options:

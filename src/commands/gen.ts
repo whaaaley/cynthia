@@ -1,5 +1,5 @@
 import { join, parse, relative } from '@std/path'
-import findCynthiaDir from '../find-cynthia-dir.ts'
+import { findUp } from 'find-up-simple'
 import { synthesize } from '../openai-code-synthesis.ts'
 
 export const genCommand = async (args: string[]) => {
@@ -19,7 +19,12 @@ export const genCommand = async (args: string[]) => {
     const mod = await import(`file://${fullPath}`)
     const { code, prompt } = await synthesize(mod.default.suites)
 
-    const cynthiaDir = await findCynthiaDir(cwd)
+    const cynthiaDir = await findUp('.cynthia', { cwd, type: 'directory' })
+    if (!cynthiaDir) {
+      console.error('No .cynthia directory found. Run "cyn init" first.')
+      return
+    }
+
     const base = `${Date.now()}-${name}`
     const genPath = join(cynthiaDir, `${base}.gen.ts`)
     const promptPath = join(cynthiaDir, `${base}.prompt.ts`)
