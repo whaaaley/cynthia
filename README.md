@@ -20,6 +20,7 @@ A proof of concept code synthesis command line tool.
 - [ ] Add more models + DeepSeek R1 by default
 - [ ] Cucumber/Gherkin support
 - [ ] Prompt user to generate initial tests
+- [ ] Add config file
 
 ## Why?
 
@@ -90,7 +91,13 @@ export default t.getState()
 
 1. Generate your synthetic function.
 
-Ensure that you have your `OPEN_API_KEY` in your environment. The model is `gpt-4o-mini` and it's currently not configurable.
+Ensure that you have your `OPENAI_API_KEY` in your environment:
+
+```bash
+export OPENAI_API_KEY="your-api-key-here"
+```
+
+Get your API key from [OpenAI's platform](https://platform.openai.com/api-keys). The model is `gpt-4o-mini` and it's currently not configurable.
 
 ```sh
 cyn gen apple-bottom-jeans.cyn.ts
@@ -139,8 +146,39 @@ Cynthia searches for `.vscode/instructions/cynthia.instructions.md` by walking u
 
 ## Installation
 
-Complete transparency here; I don't know how to develop command line tools in Deno yet. But you can get this working by cloning the repo and running `deno task link`. This will create a symlink from `cyn.sh` to `~/.deno/bin/cyn`. Then you
-should be able to use all `cyn` commands anywhere.
+### Option 1: Global Installation (Recommended)
+
+Install Cynthia globally using Deno:
+
+```bash
+# Install from JSR (when published)
+deno install --global --allow-all jsr:cynthia
+
+# Or install from source
+deno task install
+```
+
+### Option 2: Local Development
+
+Clone the repository and install locally:
+
+```bash
+git clone https://github.com/youruser/cynthia.git
+cd cynthia
+deno task install
+```
+
+### Option 3: Add as Library Dependency
+
+Use Cynthia's core functions in your project:
+
+```bash
+# Add to Deno project
+deno add jsr:cynthia
+
+# Add to Node.js project
+npm install cynthia
+```
 
 ## FAQ
 
