@@ -1,0 +1,19 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "cSpell.words": [
+      "dbaeumer",
+      "denoland"
+    ]
+  },
+  "extensions": {
+    "recommendations": [
+      "denoland.vscode-deno",
+      "dbaeumer.vscode-eslint"
+    ]
+  }
+}
