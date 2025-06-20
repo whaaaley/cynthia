@@ -1,6 +1,6 @@
 # Cynthia
 
-A proof of concept code synthesis command line tool. The CLI command is `cyn` (pronounced "sin" /sɪn/).
+A code synthesis command line tool that brings structure to AI-powered development. The CLI command is `cyn` (pronounced "sin" /sɪn/).
 
 ## Table of Contents
 
@@ -16,19 +16,16 @@ A proof of concept code synthesis command line tool. The CLI command is `cyn` (p
 ## Roadmap
 
 - [ ] Benchmarks and performance thresholds
-- [ ] Rollbacks
-- [ ] Status command
 - [ ] Add more models + DeepSeek R1 by default (Use Unified AI SDK)
 - [ ] Cucumber/Gherkin support
-- [ ] Prompt user to generate initial tests
-- [ ] Add generation retries (agentic)
-- [ ] Add a journal feature similar to drizzle-journal
+- [ ] Prompt user to generate initial tests using LLM
+- [ ] Add a journal feature similar to drizzle-journal (status, history, rollbacks)
 
 ## Why?
 
-If you're going to have an LLM write your project, you should at least do it in a constrained environment.
+If you're going to use AI to write code, you should at least do it in a structured, testable way.
 
-Using Cynthia is like writing unit tests... but without implementing anything to test. Your "tests" both generate code that satisfies the test suite and verify the generated code works.
+Using Cynthia is like writing unit tests first, then letting AI implement the solution. Your "tests" both specify exactly what you want and automatically verify that the generated code works correctly.
 
 ## How do generations work?
 
@@ -52,7 +49,7 @@ This creates `apple-bottom-jeans.cyn.ts` in the CWD with a starter template.
 
 1. Write your synthetic function using BDD-style tests.
 
-What does this function do? No idea! That's Cynthia's job.*
+What does this function do? No idea! That's Cynthia's job to figure out.*
 
 ```ts
 import { createTestSuites, runTestSuites } from 'cynthia'
@@ -111,10 +108,12 @@ Wait while your function is generated and tested. On success, you'll get:
 
 - `apple-bottom-jeans.ts` next to your `.cyn.ts` file
 - `1738397981482-apple-bottom-jeans.gen.ts` in your `.cynthia` directory
+- `1738397981482-apple-bottom-jeans.prompt.txt` in your `.cynthia` directory
 
-The `.gen.ts` file contains the LLM output while the `.ts` file is just an export of the `.gen.ts` file's default export, allowing easy rollbacks when you forget test cases or the LLM gets creative.
+The `.gen.ts` file contains the LLM output while the `.ts` file is just an export of the `.gen.ts` file's default export, allowing easy rollbacks when you forget test cases or the LLM gets creative. The `.prompt.txt` file contains the exact
+prompt sent to the LLM for debugging purposes.
 
-1. ~~Pray~~ Use your synthetic code.*
+1. Use your generated code:
 
 ```ts
 import appleBottomJeans from './apple-bottom-jeans.ts'
@@ -132,12 +131,13 @@ Cynthia can be configured using a `cynthia.config.ts` file in your project root.
 #### OpenAI Settings
 
 - `model`: OpenAI model to use (default: 'gpt-4o-mini')
-- `temperature`: Controls randomness (0.0-2.0, default: 0.1)
+- `temperature`: Controls randomness (0.0-2.0, default: 0)
 - `maxTokens`: Optional token limit for responses
+- `seed`: Seed for deterministic responses (default: timestamp, override for reproducibility)
 
 #### Generation Settings
 
-- `maxRetries`: Number of generation retries on failure (default: 3)
+- `maxRetries`: Number of agentic retries when tests fail (default: 3)
 
 #### Testing Settings
 
@@ -212,28 +212,36 @@ npm install cynthia
 
 ### Help! I can't get my tests to pass!
 
-You and me both.
+That's the point! Cynthia uses an agentic retry system - it will automatically try multiple times to generate code that satisfies your tests. If it can't, you might need to refine your test cases or break down complex requirements into
+smaller, clearer tests.
 
 ### What if I write an impossible test?
 
-All hope is lost.*
+Cynthia will attempt to solve it multiple times before giving up gracefully. The system is designed to handle edge cases and provide clear feedback about what went wrong.
 
 ### How to contribute
 
-Feel free.
+We welcome contributions! The project is actively evolving with clear architecture for extending functionality.
 
-### How do I know if Cynthia is right for me?*
+### How do I know if Cynthia is right for me?
 
 ![img](flow-chart.png)
 
 ### Should I actually use this?
 
-Probably not.*
+Cynthia provides a structured approach to AI-assisted development. It's particularly useful for:
 
-## Warning from the Author*
+- Rapid prototyping with clear requirements
+- Test-driven development workflows
+- Projects where you want AI assistance but with proper guardrails
 
-While there are merits to using AI for debugging, you should never rely purely on unit tests for code generation. When the code breaks, and it _will_ break, if you don't understand how the code works you won't know what test cases to add or
-update to fix the broken generation. Additionally, if you don't even know what you want, neither will the system.
+## Important Considerations
 
-Using LLMs to write code is extremely fragile. I created this project as an attempt to bring some sanity and structure back into the world for all you LLM ~~sinners~~ _developers_ out there. We both know you're not going to stop using LLMs
-any time soon. Now, if you use Cynthia, you have at least _some_ unit tests.
+While AI-assisted development can be incredibly productive, it's important to understand what you're building. Cynthia encourages good practices by requiring you to write comprehensive tests first, but you should still:
+
+- Understand the problem you're trying to solve
+- Review and understand the generated code
+- Add additional test cases as you discover edge cases
+- Use this as a tool to enhance your development workflow, not replace your understanding
+
+Cynthia aims to bring structure and testing discipline to AI-powered development. By requiring test-first development, you'll end up with better specifications and more reliable code.

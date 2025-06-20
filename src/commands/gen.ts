@@ -1,6 +1,19 @@
 import { join, parse, relative } from '@std/path'
 import { findUp } from 'find-up-simple'
+import { loadConfig } from '../config.ts'
 import { synthesize } from '../openai-code-synthesis.ts'
+import { retryWithCallback } from '../utils/retry.ts'
+
+// Test runner that returns success status
+const runTests = async (testFilePath: string): Promise<boolean> => {
+  const process = new Deno.Command('deno', { args: ['test', '-A', testFilePath] })
+  const output = await process.output()
+
+  if (output.stdout.length > 0) await Deno.stdout.write(output.stdout)
+  if (output.stderr.length > 0) await Deno.stderr.write(output.stderr)
+
+  return output.code === 0
+}
 
 export const genCommand = async (args: string[]) => {
   const path = args[0]
@@ -15,9 +28,8 @@ export const genCommand = async (args: string[]) => {
     const parsedPath = parse(fullPath)
     const name = parse(parse(path).name).name
 
-    console.log('Synthesizing code...', fullPath)
+    const config = await loadConfig(cwd)
     const mod = await import(`file://${fullPath}`)
-    const { code, prompt } = await synthesize(mod.default.suites)
 
     const cynthiaDir = await findUp('.cynthia', { cwd, type: 'directory' })
     if (!cynthiaDir) {
@@ -25,26 +37,48 @@ export const genCommand = async (args: string[]) => {
       return
     }
 
-    const base = `${Date.now()}-${name}`
-    const genPath = join(cynthiaDir, `${base}.gen.ts`)
-    const promptPath = join(cynthiaDir, `${base}.prompt.ts`)
+    // Define callback functions
+    const generateAndTest = async () => {
+      // Generate code
+      const result = await synthesize(mod.default.suites, cwd)
 
-    console.log('Writing files...')
-    await Deno.writeFile(genPath, new TextEncoder().encode(code))
-    await Deno.writeFile(promptPath, new TextEncoder().encode(prompt))
+      if (!result.code || !result.code.trim()) {
+        throw new Error('Generated code is empty')
+      }
 
-    const relPath = relative(parsedPath.dir, genPath)
-    const expPath = join(parsedPath.dir, `${parse(parsedPath.name).name}.ts`)
-    await Deno.writeFile(expPath, new TextEncoder().encode(`export { default } from './${relPath}'`))
+      // Write the generated files
+      const base = `${Date.now()}-${name}`
+      const genPath = join(cynthiaDir, `${base}.gen.ts`)
+      const promptPath = join(cynthiaDir, `${base}.prompt.txt`)
 
-    console.log('Running tests...')
-    const process = new Deno.Command('deno', { args: ['test', '-A', fullPath] })
-    const output = await process.output()
+      await Deno.writeFile(genPath, new TextEncoder().encode(result.code))
+      await Deno.writeFile(promptPath, new TextEncoder().encode(result.prompt))
 
-    if (output.stdout.length > 0) await Deno.stdout.write(output.stdout)
-    if (output.stderr.length > 0) await Deno.stderr.write(output.stderr)
+      const relPath = relative(parsedPath.dir, genPath)
+      const expPath = join(parsedPath.dir, `${parse(parsedPath.name).name}.ts`)
+      await Deno.writeFile(expPath, new TextEncoder().encode(`export { default } from './${relPath}'`))
 
-    Deno.exit(output.code)
+      // Run tests if configured
+      if (config.testing.runTestsAfterGeneration) {
+        const testsPass = await runTests(fullPath)
+        return { testsPass }
+      } else {
+        // If we're not running tests, consider it successful
+        return { testsPass: true }
+      }
+    }
+
+    const validateSuccess = (result: { testsPass: boolean }) => result.testsPass
+
+    // Agentic retry loop: generate code and validate with tests
+    await retryWithCallback({
+      operation: generateAndTest,
+      isSuccess: validateSuccess,
+      maxRetries: config.generation.maxRetries,
+      operationName: 'Agentic code generation and test validation',
+    })
+
+    console.log('Code generation completed successfully!')
   } catch (e) {
     console.error('Error generating file:', e)
   }

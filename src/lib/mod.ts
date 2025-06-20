@@ -8,6 +8,8 @@ export { synthesize } from '../openai-code-synthesis.ts'
 export { readPersonalizationInstructions } from '../personalization.ts'
 export { generatePrompts } from '../prompt-generation.ts'
 export { createTestSuites, runTestSuites } from '../test-harness.ts'
+export { retryWithCallback } from '../utils/retry.ts'
 
 export type { CynthiaConfig } from '../config.ts'
 export type * from '../types.ts'
+export type { RetryOptions } from '../utils/retry.ts'

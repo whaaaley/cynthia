@@ -5,7 +5,7 @@
 
 // Template for .cyn.ts test files
 export function createTestFileTemplate(filename: string): string {
-  return `// @ts-nocheck
+  return `// @ts-nocheck: imports generated code that may not exist yet
 /* eslint-disable */
 // Cynthia test file - imports generated code that may not exist yet
 
@@ -16,7 +16,7 @@ const t = createTestSuites()
 
 t.describe('My Synthetic Code', () => {
   t.it('should do something', () => {
-    t.expect(true).toBe(true)
+    t.expect([]).toBe(true)
   })
 })
 
@@ -32,18 +32,22 @@ export function createConfigTemplate(): string {
 //
 // This file configures the behavior of the Cynthia code synthesis tool.
 // API key should be set via OPENAI_API_KEY environment variable.
+//
+// Seed option: Defaults to timestamp for variation. Set a fixed number
+// (e.g., 42) for reproducible results across runs.
 
 import type { CynthiaConfig } from 'cynthia'
 
 const config: CynthiaConfig = {
   openai: {
     model: 'gpt-4o-mini',
-    temperature: 0.1,
+    temperature: 0, // Set to 0 for deterministic results with seed
     // maxTokens: 4000, // Optional: limit response tokens
+    // seed: 42, // Optional: override default timestamp-based seed
   },
 
   generation: {
-    maxRetries: 3,
+    maxRetries: 3, // Agentic retries when tests fail
   },
 
   testing: {

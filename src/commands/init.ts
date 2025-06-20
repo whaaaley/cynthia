@@ -17,7 +17,6 @@ export const initCommand = async () => {
       const configContent = createConfigTemplate()
       await Deno.writeTextFile(configPath, configContent)
       console.log(`Created configuration file: ${configPath}`)
-      console.log('Edit this file to customize Cynthia behavior.')
     } else {
       console.log('Configuration file already exists')
     }

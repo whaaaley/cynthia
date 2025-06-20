@@ -11,8 +11,9 @@ const configSchema = z.object({
   // OpenAI Configuration
   openai: z.object({
     model: z.string().default('gpt-4o-mini'),
-    temperature: z.number().min(0).max(2).default(0.1),
+    temperature: z.number().min(0).max(2).default(0),
     maxTokens: z.number().optional(),
+    seed: z.number().default(Date.now()),
   }).default({}),
 
   // Generation Settings
@@ -37,7 +38,8 @@ export type CynthiaConfig = z.infer<typeof configSchema>
 const defaultConfig: CynthiaConfig = {
   openai: {
     model: 'gpt-4o-mini',
-    temperature: 0.1,
+    temperature: 0,
+    seed: Date.now(),
   },
   generation: {
     maxRetries: 3,

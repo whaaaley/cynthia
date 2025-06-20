@@ -46,6 +46,7 @@ export const synthesize = async (suites: Suite[], cwd?: string) => {
     response_format: responseSchema,
     temperature: config.openai.temperature,
     max_tokens: config.openai.maxTokens,
+    seed: config.openai.seed,
   })
 
   const [choice] = response.choices

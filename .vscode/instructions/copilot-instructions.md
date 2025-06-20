@@ -15,3 +15,9 @@ Use line comments (//) instead of block comments (/* */) for consistency.
 Use truthy checks (if (!variable)) consistently instead of mixing with type checks.
 
 Use array.join() for multiline strings instead of string concatenation.
+
+In try/catch blocks, use 'e' as error parameter name and pass 'e' directly to console.error() as second parameter.
+
+Keep function parameters on one line unless they exceed line width limits.
+
+Define callback functions as const arrow functions before passing to other functions instead of inline.
