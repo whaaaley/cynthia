@@ -1,6 +1,6 @@
 # Cynthia
 
-A code synthesis command line tool that brings structure to AI-powered development. The CLI command is `cyn` (pronounced "sin" /sɪn/).
+A code synthesis command line tool that brings structure to AI-powered development.
 
 ## Table of Contents
 
@@ -17,15 +17,13 @@ A code synthesis command line tool that brings structure to AI-powered developme
 
 - [ ] Benchmarks and performance thresholds
 - [ ] Add more models + DeepSeek R1 by default (Use Unified AI SDK)
-- [ ] Pivot from Deno test and bdd to Cucumber/Gherkin
-- [ ] Prompt user to generate initial tests using LLM
 - [ ] Add a journal feature similar to drizzle-journal (status, history, rollbacks)
 
 ## Why?
 
-If you're going to use AI to write code, you should at least do it in a structured, testable way.
+If you're going to use AI to write code, you need to test thoroughly.
 
-Using Cynthia is like writing unit tests first, then letting AI implement the solution. Your "tests" both specify exactly what you want and automatically verify that the generated code works correctly.
+Cynthia is test-driven development with AI. You write unit tests first, then let AI implement the solution. Your tests both specify exactly what you want and automatically verify that the generated code works correctly.
 
 ## How do generations work?
 
@@ -39,58 +37,48 @@ cyn init
 
 This creates a `cynthia.config.ts` file with default settings and a `.cynthia` directory.
 
-1. Create a `.cyn.ts` file:
+2. Create a test file:
 
 ```sh
-cyn create apple-bottom-jeans
+cyn create phone-number-formatter
 ```
 
-This creates `apple-bottom-jeans.cyn.ts` in the CWD with a starter template.
+This creates `phone-number-formatter.test.ts` in the current directory with a starter template and `phone-number-formatter.ts` as a placeholder implementation file.
 
-1. Write your synthetic function using BDD-style tests.
-
-What does this function do? No idea! That's Cynthia's job to figure out.*
+3. Write your synthetic function using BDD-style tests:
 
 ```ts
-import { createTestSuites, runTestSuites } from 'cynthia'
-import testFn from './hello-world.ts' // This will be generated for you later, you still need to import it though
+// @ts-nocheck: imports generated code that may not exist yet
+/* eslint-disable */
 
-const t = createTestSuites()
+import * as assert from 'jsr:@std/assert'
+import * as bdd from 'jsr:@std/testing/bdd'
+import { cynthia } from 'cynthia'
+import testFn from './phone-number-formatter.ts'
 
-t.describe('Fruit Tests', () => {
-  t.it('should identify an apple as a fruit', () => {
-    const input = ['apple']
-    t.expect(input).toBe('fruit')
+const { assertEquals, describe, it, serializeTest } = cynthia({ assert, bdd })
+
+describe('Phone number formatter', () => {
+  it('should format 10-digit numbers', () => {
+    const result = testFn('1234567890')
+    assertEquals(result, '(123) 456-7890')
   })
 
-  t.it('should not identify a carrot as a fruit', () => {
-    const input = ['carrot']
-    t.expect(input).not.toBe('fruit')
+  it('should handle numbers with dashes', () => {
+    const result = testFn('123-456-7890')
+    assertEquals(result, '(123) 456-7890')
   })
 
-  t.it('should match fruit object properties', () => {
-    const input = { name: 'apple', type: 'fruit', color: 'red' }
-    t.expect(input).toMatchObject({
-      type: 'fruit',
-      color: 'red',
-    })
-  })
-
-  t.it('should not match vegetable object properties', () => {
-    const input = { name: 'apple', type: 'fruit', color: 'red' }
-    t.expect(input).not.toMatchObject({
-      type: 'vegetable',
-      color: 'orange',
-    })
+  it('should handle numbers with spaces', () => {
+    const result = testFn('123 456 7890')
+    assertEquals(result, '(123) 456-7890')
   })
 })
 
-runTestSuites(t.getState(), testFn)
-
-export default t.getState()
+export default serializeTest()
 ```
 
-1. Generate your synthetic function.
+4. Generate your synthetic function:
 
 Ensure that you have your `OPENAI_API_KEY` in your environment:
 
@@ -101,25 +89,25 @@ export OPENAI_API_KEY="your-api-key-here"
 Get your API key from [OpenAI's platform](https://platform.openai.com/api-keys). The default model is `gpt-4o-mini` but this can be configured (see [Configuration](#configuration) section).
 
 ```sh
-cyn gen apple-bottom-jeans.cyn.ts
+cyn gen phone-number-formatter.test.ts
 ```
 
 Wait while your function is generated and tested. On success, you'll get:
 
-- `apple-bottom-jeans.ts` next to your `.cyn.ts` file
-- `1738397981482-apple-bottom-jeans.gen.ts` in your `.cynthia` directory
-- `1738397981482-apple-bottom-jeans.prompt.txt` in your `.cynthia` directory
+- `phone-number-formatter.ts` next to your test file
+- `1738397981482-phone-number-formatter.gen.ts` in your `.cynthia` directory
+- `1738397981482-phone-number-formatter.prompt.txt` in your `.cynthia` directory
 
 The `.gen.ts` file contains the LLM output while the `.ts` file is just an export of the `.gen.ts` file's default export, allowing easy rollbacks when you forget test cases or the LLM gets creative. The `.prompt.txt` file contains the exact
 prompt sent to the LLM for debugging purposes.
 
-1. Use your generated code:
+5. Use your generated code:
 
 ```ts
-import appleBottomJeans from './apple-bottom-jeans.ts'
+import formatPhoneNumber from './phone-number-formatter.ts'
 
-console.log(appleBottomJeans(['apple']))
-// => 'fruit'
+console.log(formatPhoneNumber('1234567890'))
+// => '(123) 456-7890'
 ```
 
 ## Configuration
@@ -180,9 +168,11 @@ Install Cynthia globally using Deno:
 
 ```bash
 # Install from JSR (when published)
-deno install --global --allow-all jsr:cynthia
+deno install --global --allow-all jsr:@cynthia
 
 # Or install from source
+git clone https://github.com/whaaaley/cynthia.git
+cd cynthia
 deno task install
 ```
 
@@ -191,7 +181,7 @@ deno task install
 Clone the repository and install locally:
 
 ```bash
-git clone https://github.com/youruser/cynthia.git
+git clone https://github.com/whaaaley/cynthia.git
 cd cynthia
 deno task install
 ```
@@ -203,17 +193,15 @@ Use Cynthia's core functions in your project:
 ```bash
 # Add to Deno project
 deno add jsr:cynthia
-
-# Add to Node.js project
-npm install cynthia
 ```
 
 ## FAQ
 
 ### Help! I can't get my tests to pass!
 
-That's the point! Cynthia uses an agentic retry system - it will automatically try multiple times to generate code that satisfies your tests. If it can't, you might need to refine your test cases or break down complex requirements into
-smaller, clearer tests.
+Cynthia uses an agentic retry system - it will automatically try multiple times to generate code that satisfies your tests.
+
+If it can't, you might need to refine your test cases or break down complex requirements into smaller, clearer tests.
 
 ### What if I write an impossible test?
 
