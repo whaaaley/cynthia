@@ -1,25 +1,21 @@
-import { join, parse } from '@std/path'
-import { runTestSuites } from '../test-harness.ts'
+import { join } from '@std/path'
+import { runDenoTests } from '../utils/test-runner.ts'
 
 export const testCommand = async (args: string[]) => {
   const path = args[0]
   if (!path) {
     console.error('Error: filepath is required')
-    return
+    return // Exit early if no path is provided
   }
 
   try {
     const cwd = Deno.cwd()
     const fullPath = join(cwd, path)
-    const parsedPath = parse(fullPath)
-    const expPath = join(parsedPath.dir, `${parse(parsedPath.name).name}.ts`)
-
-    console.log('Importing files...')
-    const mod = await import(`file://${fullPath}`)
-    const gen = await import(`file://${expPath}`)
 
     console.log('Running tests...')
-    runTestSuites(mod.default, gen.default)
+    const exitCode = await runDenoTests(fullPath)
+
+    Deno.exit(exitCode)
   } catch (e) {
     console.error('Error running tests:', e)
   }

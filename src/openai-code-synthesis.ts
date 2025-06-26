@@ -1,8 +1,8 @@
 import OpenAI from '@openai/openai'
 import { zodResponseFormat } from '@openai/openai/helpers/zod'
 import { z } from 'zod'
-import { generatePrompts } from './prompt-generation.ts'
-import type { Suite } from './types.ts'
+import { loadConfig } from './config.ts'
+import { generatePrompts } from './core/prompt-generation.ts'
 
 const codeBlockSchema = z.object({
   name: z.string(),
@@ -18,44 +18,49 @@ const codeBlockSchema = z.object({
     }),
 })
 
-const responseSchema = zodResponseFormat(
-  codeBlockSchema,
-  'typescript_function',
-)
+const responseSchema = zodResponseFormat(codeBlockSchema, 'typescript_function')
 
-export const synthesize = async (suites: Suite[], cwd?: string) => {
-  const client = new OpenAI({ apiKey: Deno.env.get('OPENAI_API_KEY') })
+export const synthesize = async (testPrompt: string, cwd?: string) => {
+  const config = await loadConfig(cwd)
+  const apiKey = Deno.env.get('OPENAI_API_KEY')
+
+  if (!apiKey) {
+    throw new Error([
+      'Error: OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.',
+      'Get your API key from: https://platform.openai.com/api-keys',
+    ].join('\n'))
+  }
+
+  const client = new OpenAI({ apiKey })
 
   console.log('Synthesizing TypeScript from test suites...')
-
-  const { systemPrompt, userPrompt } = await generatePrompts(suites, cwd)
+  const { systemPrompt } = await generatePrompts(cwd)
 
   const response = await client.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: config.openai.model,
     messages: [
       { role: 'system', content: systemPrompt },
-      { role: 'user', content: userPrompt },
+      { role: 'user', content: testPrompt },
     ],
     response_format: responseSchema,
-    temperature: 0.1,
+    temperature: config.openai.temperature,
+    max_tokens: config.openai.maxTokens,
+    seed: config.openai.seed,
   })
 
   const [choice] = response.choices
   const { content } = choice.message
 
-  if (typeof content !== 'string') {
-    console.error('Invalid response format from OpenAI')
-    return { code: '', prompt: userPrompt }
+  if (!content) {
+    console.error('Error: invalid response format from OpenAI')
+    return { code: '', prompt: testPrompt }
   }
 
   try {
     const parsed = JSON.parse(content)
-    return {
-      code: parsed.code ?? '',
-      prompt: userPrompt,
-    }
+    return { code: parsed.code ?? '', prompt: testPrompt }
   } catch (e) {
-    console.error('Failed to parse OpenAI response:', e)
-    return { code: '', prompt: userPrompt }
+    console.error('Error: failed to parse OpenAI response:', e)
+    return { code: '', prompt: testPrompt }
   }
 }

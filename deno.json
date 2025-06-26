@@ -1,6 +1,6 @@
 {
   "name": "cynthia",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "exports": {
     ".": "./src/lib/mod.ts",
     "./cli": "./src/cli.ts"
@@ -11,7 +11,7 @@
   "tasks": {
     "dev": "deno run --allow-all ./bin/cyn.ts",
     "build": "deno compile --allow-all --output cyn ./bin/cyn.ts",
-    "install": "deno install --global --allow-all --name cyn ./bin/cyn.ts",
+    "install": "deno install --global --allow-all --name cyn --config ./deno.json -f ./bin/cyn.ts",
     "test": "deno test --allow-all"
   },
   "fmt": {
@@ -26,6 +26,7 @@
     "@std/fs": "jsr:@std/fs@^1.0.10",
     "@std/path": "jsr:@std/path@^1.0.8",
     "@std/testing": "jsr:@std/testing@^1.0.9",
+    "change-case": "npm:change-case@^5.4.4",
     "find-up-simple": "npm:find-up-simple@^1.0.1",
     "zod": "npm:zod@^3.24.1"
   }

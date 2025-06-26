@@ -1,12 +1,13 @@
 # Cynthia
 
-A proof of concept code synthesis command line tool.
+A code synthesis command line tool that brings structure to AI-powered development.
 
 ## Table of Contents
 
 - [Roadmap](#roadmap)
 - [Why?](#why)
 - [How do generations work?](#how-do-generations-work)
+- [Configuration](#configuration)
 - [Personalization](#personalization)
 - [Installation](#installation)
 - [FAQ](#faq)
@@ -15,81 +16,69 @@ A proof of concept code synthesis command line tool.
 ## Roadmap
 
 - [ ] Benchmarks and performance thresholds
-- [ ] Rollbacks
-- [ ] Status command
-- [ ] Add more models + DeepSeek R1 by default
-- [ ] Cucumber/Gherkin support
-- [ ] Prompt user to generate initial tests
-- [ ] Add config file
+- [ ] Add more models + DeepSeek R1 by default (Use Unified AI SDK)
+- [ ] Add a journal feature similar to drizzle-journal (status, history, rollbacks)
 
 ## Why?
 
-If you're going to have an LLM write your project, you should at least do it in a constrained environment.
+If you're going to use AI to write code, you need to test thoroughly.
 
-Using Cynthia is like writing unit tests... but without implementing anything to test. Your "tests" both generate code that satisfies the test suite and verify the generated code works.
+Cynthia is test-driven development with AI. You write unit tests first, then let AI implement the solution. Your tests both specify exactly what you want and automatically verify that the generated code works correctly.
 
 ## How do generations work?
 
 Just like database migrations!
 
-1. Create a `.cynthia` dir, or do this yourself with `mkdir -p`
+1. Initialize your project:
 
 ```sh
 cyn init
 ```
 
-1. Create a `.cyn.ts` file: (cyn - pronounced "sin" /sɪn/)
+This creates a `cynthia.config.ts` file with default settings and a `.cynthia` directory.
+
+2. Create a test file:
 
 ```sh
-cyn create apple-bottom-jeans
+cyn create phone-number-formatter
 ```
 
-This creates `apple-bottom-jeans.cyn.ts` in the CWD with a starter template.
+This creates `phone-number-formatter.test.ts` in the current directory with a starter template and `phone-number-formatter.ts` as a placeholder implementation file.
 
-1. Write your synthetic function using BDD-style tests.
-
-What does this function do? No idea! That's Cynthia's job.*
+3. Write your synthetic function using BDD-style tests:
 
 ```ts
-import { createTestSuites, runTestSuites } from 'cynthia'
-import testFn from './hello-world.ts' // This will be generated for you later, you still need to import it though
+// @ts-nocheck: imports generated code that may not exist yet
+/* eslint-disable */
 
-const t = createTestSuites()
+import * as assert from 'jsr:@std/assert'
+import * as bdd from 'jsr:@std/testing/bdd'
+import { cynthia } from 'cynthia'
+import testFn from './phone-number-formatter.ts'
 
-t.describe('Fruit Tests', () => {
-  t.it('should identify an apple as a fruit', () => {
-    const input = ['apple']
-    t.expect(input).toBe('fruit')
+const { assertEquals, describe, it, serializeTest } = cynthia({ assert, bdd })
+
+describe('Phone number formatter', () => {
+  it('should format 10-digit numbers', () => {
+    const result = testFn('1234567890')
+    assertEquals(result, '(123) 456-7890')
   })
 
-  t.it('should not identify a carrot as a fruit', () => {
-    const input = ['carrot']
-    t.expect(input).not.toBe('fruit')
+  it('should handle numbers with dashes', () => {
+    const result = testFn('123-456-7890')
+    assertEquals(result, '(123) 456-7890')
   })
 
-  t.it('should match fruit object properties', () => {
-    const input = { name: 'apple', type: 'fruit', color: 'red' }
-    t.expect(input).toMatchObject({
-      type: 'fruit',
-      color: 'red',
-    })
-  })
-
-  t.it('should not match vegetable object properties', () => {
-    const input = { name: 'apple', type: 'fruit', color: 'red' }
-    t.expect(input).not.toMatchObject({
-      type: 'vegetable',
-      color: 'orange',
-    })
+  it('should handle numbers with spaces', () => {
+    const result = testFn('123 456 7890')
+    assertEquals(result, '(123) 456-7890')
   })
 })
 
-runTestSuites(t.getState(), testFn)
-
-export default t.getState()
+export default serializeTest()
 ```
 
-1. Generate your synthetic function.
+4. Generate your synthetic function:
 
 Ensure that you have your `OPENAI_API_KEY` in your environment:
 
@@ -97,27 +86,54 @@ Ensure that you have your `OPENAI_API_KEY` in your environment:
 export OPENAI_API_KEY="your-api-key-here"
 ```
 
-Get your API key from [OpenAI's platform](https://platform.openai.com/api-keys). The model is `gpt-4o-mini` and it's currently not configurable.
+Get your API key from [OpenAI's platform](https://platform.openai.com/api-keys). The default model is `gpt-4o-mini` but this can be configured (see [Configuration](#configuration) section).
 
 ```sh
-cyn gen apple-bottom-jeans.cyn.ts
+cyn gen phone-number-formatter.test.ts
 ```
 
 Wait while your function is generated and tested. On success, you'll get:
 
-- `apple-bottom-jeans.ts` next to your `.cyn.ts` file
-- `1738397981482-apple-bottom-jeans.gen.ts` in your `.cynthia` directory
+- `phone-number-formatter.ts` next to your test file
+- `1738397981482-phone-number-formatter.gen.ts` in your `.cynthia` directory
+- `1738397981482-phone-number-formatter.prompt.txt` in your `.cynthia` directory
 
-The `.gen.ts` file contains the LLM output while the `.ts` file is just an export of the `.gen.ts` file's default export, allowing easy rollbacks when you forget test cases or the LLM gets creative.
+The `.gen.ts` file contains the LLM output while the `.ts` file is just an export of the `.gen.ts` file's default export, allowing easy rollbacks when you forget test cases or the LLM gets creative. The `.prompt.txt` file contains the exact
+prompt sent to the LLM for debugging purposes.
 
-1. ~~Pray~~ Use your synthetic code.*
+5. Use your generated code:
 
 ```ts
-import appleBottomJeans from './apple-bottom-jeans.ts'
+import formatPhoneNumber from './phone-number-formatter.ts'
 
-console.log(appleBottomJeans(['apple']))
-// => 'fruit'
+console.log(formatPhoneNumber('1234567890'))
+// => '(123) 456-7890'
 ```
+
+## Configuration
+
+Cynthia can be configured using a `cynthia.config.ts` file in your project root.
+
+### Configuration Options
+
+#### OpenAI Settings
+
+- `model`: OpenAI model to use (default: 'gpt-4o-mini')
+- `temperature`: Controls randomness (0.0-2.0, default: 0)
+- `maxTokens`: Optional token limit for responses
+- `seed`: Seed for deterministic responses (default: timestamp, override for reproducibility)
+
+#### Generation Settings
+
+- `maxRetries`: Number of agentic retries when tests fail (default: 3)
+
+#### Testing Settings
+
+- `runTestsAfterGeneration`: Automatically run tests after generation (default: true)
+
+#### CLI Settings
+
+- `confirmGenerations`: Prompt for confirmation before generating (default: false)
 
 ## Personalization
 
@@ -152,9 +168,11 @@ Install Cynthia globally using Deno:
 
 ```bash
 # Install from JSR (when published)
-deno install --global --allow-all jsr:cynthia
+deno install --global --allow-all jsr:@cynthia
 
 # Or install from source
+git clone https://github.com/whaaaley/cynthia.git
+cd cynthia
 deno task install
 ```
 
@@ -163,7 +181,7 @@ deno task install
 Clone the repository and install locally:
 
 ```bash
-git clone https://github.com/youruser/cynthia.git
+git clone https://github.com/whaaaley/cynthia.git
 cd cynthia
 deno task install
 ```
@@ -175,37 +193,43 @@ Use Cynthia's core functions in your project:
 ```bash
 # Add to Deno project
 deno add jsr:cynthia
-
-# Add to Node.js project
-npm install cynthia
 ```
 
 ## FAQ
 
 ### Help! I can't get my tests to pass!
 
-You and me both.
+Cynthia uses an agentic retry system - it will automatically try multiple times to generate code that satisfies your tests.
+
+If it can't, you might need to refine your test cases or break down complex requirements into smaller, clearer tests.
 
 ### What if I write an impossible test?
 
-All hope is lost.*
+Cynthia will attempt to solve it multiple times before giving up gracefully. The system is designed to handle edge cases and provide clear feedback about what went wrong.
 
 ### How to contribute
 
-Feel free.
+We welcome contributions! The project is actively evolving with clear architecture for extending functionality.
 
-### How do I know if Cynthia is right for me?*
+### How do I know if Cynthia is right for me?
 
 ![img](flow-chart.png)
 
 ### Should I actually use this?
 
-Probably not.*
+Cynthia provides a structured approach to AI-assisted development. It's particularly useful for:
 
-## Warning from the Author*
+- Rapid prototyping with clear requirements
+- Test-driven development workflows
+- Projects where you want AI assistance but with proper guardrails
 
-While there are merits to using AI for debugging, you should never rely purely on unit tests for code generation. When the code breaks, and it _will_ break, if you don't understand how the code works you won't know what test cases to add or
-update to fix the broken generation. Additionally, if you don't even know what you want, neither will the system.
+## Important Considerations
 
-Using LLMs to write code is extremely fragile. I created this project as an attempt to bring some sanity and structure back into the world for all you LLM ~~sinners~~ _developers_ out there. We both know you're not going to stop using LLMs
-any time soon. Now, if you use Cynthia, you have at least _some_ unit tests.
+While AI-assisted development can be incredibly productive, it's important to understand what you're building. Cynthia encourages good practices by requiring you to write comprehensive tests first, but you should still:
+
+- Understand the problem you're trying to solve
+- Review and understand the generated code
+- Add additional test cases as you discover edge cases
+- Use this as a tool to enhance your development workflow, not replace your understanding
+
+Cynthia aims to bring structure and testing discipline to AI-powered development. By requiring test-first development, you'll end up with better specifications and more reliable code.
