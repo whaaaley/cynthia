@@ -167,8 +167,8 @@ Cynthia searches for `.vscode/instructions/cynthia.instructions.md` by walking u
 Install Cynthia globally using Deno:
 
 ```bash
-# Install from JSR (when published)
-deno install --global --allow-all jsr:@cynthia
+# Install from JSR
+deno install --global --allow-all jsr:@cynthia/cynthia
 
 # Or install from source
 git clone https://github.com/whaaaley/cynthia.git
