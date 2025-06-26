@@ -2,7 +2,7 @@ import { join, parse, relative } from '@std/path'
 import { findUp } from 'find-up-simple'
 import { loadConfig } from '../config.ts'
 import { synthesize } from '../openai-code-synthesis.ts'
-import { retryWithCallback } from '../utils/retry.ts'
+import { retryWithCallback } from '../utils/retry-with-callback.ts'
 import { runDenoTests } from '../utils/test-runner.ts'
 
 export const genCommand = async (args: string[]) => {
