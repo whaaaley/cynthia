@@ -46,7 +46,6 @@ const config: CynthiaConfig = {
   openai: {
     model: 'gpt-4o-mini',
     temperature: 0,
-    seed: Date.now(),
   },
   generation: {
     maxRetries: 3,
