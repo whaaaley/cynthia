@@ -53,7 +53,7 @@ This creates `phone-number-formatter.test.ts` in the current directory with a st
 
 import * as assert from 'jsr:@std/assert'
 import * as bdd from 'jsr:@std/testing/bdd'
-import { cynthia } from 'cynthia'
+import { cynthia } from 'jsr:@cynthia/cynthia'
 import testFn from './phone-number-formatter.ts'
 
 const { assertEquals, describe, it, serializeTest } = cynthia({ assert, bdd })
@@ -167,8 +167,8 @@ Cynthia searches for `.vscode/instructions/cynthia.instructions.md` by walking u
 Install Cynthia globally using Deno:
 
 ```bash
-# Install from JSR (when published)
-deno install --global --allow-all jsr:@cynthia
+# Install from JSR
+deno install --global --allow-all jsr:@cynthia/cynthia
 
 # Or install from source
 git clone https://github.com/whaaaley/cynthia.git
@@ -192,7 +192,7 @@ Use Cynthia's core functions in your project:
 
 ```bash
 # Add to Deno project
-deno add jsr:cynthia
+deno add jsr:@cynthia/cynthia
 ```
 
 ## FAQ

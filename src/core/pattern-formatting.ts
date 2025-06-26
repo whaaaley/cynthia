@@ -1,4 +1,4 @@
-import { sentenceCase } from 'npm:change-case'
+import { sentenceCase } from 'change-case'
 import { detectPattern } from './pattern-detection.ts'
 
 const formatValue = (value: unknown): string => {

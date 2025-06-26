@@ -1,4 +1,4 @@
-import { capitalCase } from 'npm:change-case'
+import { capitalCase } from 'change-case'
 import { formatPattern } from './pattern-formatting.ts'
 
 type CapturedCall = {

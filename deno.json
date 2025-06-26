@@ -1,8 +1,8 @@
 {
-  "name": "cynthia",
+  "name": "@cynthia/cynthia",
   "version": "0.0.2",
   "exports": {
-    ".": "./src/lib/mod.ts",
+    ".": "./mod.ts",
     "./cli": "./src/cli.ts"
   },
   "bin": {
