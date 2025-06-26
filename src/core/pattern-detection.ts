@@ -1,4 +1,4 @@
-export const patternKeywords = {
+const patternKeywords = {
   negation: ['not', 'false'],
   throwing: ['throw'],
   equality: ['equal', 'tobe', 'match'],

@@ -4,8 +4,11 @@ import { loadConfig } from '../config.ts'
 import { synthesize } from '../openai-code-synthesis.ts'
 import { retryWithCallback } from '../utils/retry-with-callback.ts'
 import { runDenoTests } from '../utils/test-runner.ts'
+import { createPlaceholder } from './create.ts'
 
 export const genCommand = async (args: string[]) => {
+  Deno.env.set('CYNTHIA_CAPTURE', 'true')
+
   const path = args[0]
   if (!path) {
     console.error('Error: filepath is required')
@@ -19,6 +22,7 @@ export const genCommand = async (args: string[]) => {
     const name = parse(parse(path).name).name
 
     const config = await loadConfig(cwd)
+    await createPlaceholder(name)
     const mod = await import(`file://${fullPath}`)
 
     const cynthiaDir = await findUp('.cynthia', { cwd, type: 'directory' })
@@ -28,10 +32,11 @@ export const genCommand = async (args: string[]) => {
     }
 
     const generateAndTest = async () => {
-      const result = await synthesize(mod.default.suites, cwd)
+      const prompt = mod.default
+      const result = await synthesize(prompt, cwd)
 
       if (!result.code || !result.code.trim()) {
-        throw new Error('Generated code is empty')
+        throw new Error('Generated code or prompt is empty')
       }
 
       // Write the generated files

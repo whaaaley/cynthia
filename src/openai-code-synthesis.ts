@@ -2,8 +2,7 @@ import OpenAI from '@openai/openai'
 import { zodResponseFormat } from '@openai/openai/helpers/zod'
 import { z } from 'zod'
 import { loadConfig } from './config.ts'
-import { generatePrompts } from './prompt-generation.ts'
-import type { Suite } from './types.ts'
+import { generatePrompts } from './core/prompt-generation.ts'
 
 const codeBlockSchema = z.object({
   name: z.string(),
@@ -21,7 +20,7 @@ const codeBlockSchema = z.object({
 
 const responseSchema = zodResponseFormat(codeBlockSchema, 'typescript_function')
 
-export const synthesize = async (suites: Suite[], cwd?: string) => {
+export const synthesize = async (testPrompt: string, cwd?: string) => {
   const config = await loadConfig(cwd)
   const apiKey = Deno.env.get('OPENAI_API_KEY')
 
@@ -35,13 +34,13 @@ export const synthesize = async (suites: Suite[], cwd?: string) => {
   const client = new OpenAI({ apiKey })
 
   console.log('Synthesizing TypeScript from test suites...')
-  const { systemPrompt, userPrompt } = await generatePrompts(suites, cwd)
+  const { systemPrompt } = await generatePrompts(cwd)
 
   const response = await client.chat.completions.create({
     model: config.openai.model,
     messages: [
       { role: 'system', content: systemPrompt },
-      { role: 'user', content: userPrompt },
+      { role: 'user', content: testPrompt },
     ],
     response_format: responseSchema,
     temperature: config.openai.temperature,
@@ -54,14 +53,14 @@ export const synthesize = async (suites: Suite[], cwd?: string) => {
 
   if (!content) {
     console.error('Error: invalid response format from OpenAI')
-    return { code: '', prompt: userPrompt }
+    return { code: '', prompt: testPrompt }
   }
 
   try {
     const parsed = JSON.parse(content)
-    return { code: parsed.code ?? '', prompt: userPrompt }
+    return { code: parsed.code ?? '', prompt: testPrompt }
   } catch (e) {
     console.error('Error: failed to parse OpenAI response:', e)
-    return { code: '', prompt: userPrompt }
+    return { code: '', prompt: testPrompt }
   }
 }

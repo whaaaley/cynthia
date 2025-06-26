@@ -49,7 +49,7 @@ const generic = (args: unknown[], functionName: string) => {
   return `${englishName} ${argStr}`
 }
 
-export const patterns = {
+const patterns = {
   equality,
   negation,
   throwing,

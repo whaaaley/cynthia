@@ -11,7 +11,7 @@
   "tasks": {
     "dev": "deno run --allow-all ./bin/cyn.ts",
     "build": "deno compile --allow-all --output cyn ./bin/cyn.ts",
-    "install": "deno install --global --allow-all --name cyn ./bin/cyn.ts",
+    "install": "deno install --global --allow-all --name cyn --config ./deno.json -f ./bin/cyn.ts",
     "test": "deno test --allow-all"
   },
   "fmt": {

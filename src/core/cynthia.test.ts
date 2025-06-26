@@ -1,6 +1,6 @@
 import { assertEquals, assertExists } from 'jsr:@std/assert'
 import { describe, it } from 'jsr:@std/testing/bdd'
-import { cynthia } from './mod.ts'
+import { cynthia } from './cynthia.ts'
 
 // Mock modules to test with
 const mockAssert = {
@@ -17,19 +17,17 @@ const mockAssert = {
 }
 
 const mockBdd = {
-  describe: (name: string, fn: () => void) => {
-    // Mock describe - just execute the function
-    fn()
+  describe: (_name: string, _fn: () => void) => {
+    // Don't execute the callback - let cynthia handle it
   },
-  it: (name: string, fn: () => void) => {
-    // Mock it - just execute the function
-    fn()
+  it: (_name: string, _fn: () => void) => {
+    // Don't execute the callback - let cynthia handle it
   },
 }
 
 describe('Cynthia Function', () => {
   it('should wrap all functions from input modules', () => {
-    const wrapped = cynthia(mockAssert, mockBdd)
+    const wrapped = cynthia({ assert: mockAssert, bdd: mockBdd })
 
     // Should have all the original functions
     assertExists(wrapped.assertEquals)
@@ -46,14 +44,14 @@ describe('Cynthia Function', () => {
       myNumber: 42,
     }
 
-    const wrapped = cynthia(moduleWithConstant)
+    const wrapped = cynthia({ assert: moduleWithConstant, bdd: {} })
 
     assertEquals(wrapped.myConstant, 'hello world')
     assertEquals(wrapped.myNumber, 42)
   })
 
   it('should capture function calls', () => {
-    const wrapped = cynthia(mockAssert)
+    const wrapped = cynthia({ assert: mockAssert, bdd: {} })
     const wrappedAssertEquals = wrapped.assertEquals as (actual: unknown, expected: unknown) => void
     const getCapturedCalls = wrapped.getCapturedCalls as () => Array<{ function: string; args: unknown[]; timestamp: number }>
 
@@ -71,7 +69,7 @@ describe('Cynthia Function', () => {
   })
 
   it('should preserve original function behavior', () => {
-    const wrapped = cynthia(mockAssert)
+    const wrapped = cynthia({ assert: mockAssert, bdd: {} })
     const wrappedAssertEquals = wrapped.assertEquals as (actual: unknown, expected: unknown) => void
 
     // This should not throw (functions work normally)
@@ -89,7 +87,7 @@ describe('Cynthia Function', () => {
   })
 
   it('should add timestamps to captured calls', () => {
-    const wrapped = cynthia(mockAssert)
+    const wrapped = cynthia({ assert: mockAssert, bdd: {} })
     const wrappedAssertEquals = wrapped.assertEquals as (actual: unknown, expected: unknown) => void
     const getCapturedCalls = wrapped.getCapturedCalls as () => Array<{ function: string; args: unknown[]; timestamp: number }>
 
@@ -110,7 +108,7 @@ describe('Cynthia Function', () => {
     const module1 = { func1: () => 'one' }
     const module2 = { func2: () => 'two' }
 
-    const wrapped = cynthia(module1, module2)
+    const wrapped = cynthia({ assert: module1, bdd: module2 })
 
     assertExists(wrapped.func1)
     assertExists(wrapped.func2)
@@ -123,7 +121,7 @@ describe('Cynthia Function', () => {
       greet: (name: string) => `Hello, ${name}!`,
     }
 
-    const wrapped = cynthia(testModule)
+    const wrapped = cynthia({ assert: testModule, bdd: {} })
     const add = wrapped.add as (a: number, b: number) => number
     const greet = wrapped.greet as (name: string) => string
 
@@ -140,7 +138,7 @@ describe('Cynthia Function', () => {
       processObject: (obj: { name: string }) => obj.name.toUpperCase(),
     }
 
-    const wrapped = cynthia(testModule)
+    const wrapped = cynthia({ assert: testModule, bdd: {} })
     const processArray = wrapped.processArray as (arr: number[]) => number[]
     const processObject = wrapped.processObject as (obj: { name: string }) => string
     const getCapturedCalls = wrapped.getCapturedCalls as () => Array<{ function: string; args: unknown[]; timestamp: number }>
@@ -164,7 +162,7 @@ describe('Cynthia Integration', () => {
     const realAssert = { assertEquals }
     const realBdd = { describe, it }
 
-    const wrapped = cynthia(realAssert, realBdd)
+    const wrapped = cynthia({ assert: realAssert, bdd: realBdd })
 
     // Should have the functions
     assertExists(wrapped.assertEquals)
@@ -185,11 +183,11 @@ describe('Cynthia Integration', () => {
 
 describe('Cynthia Serialization', () => {
   it('should serialize simple test structure', () => {
-    const wrapped = cynthia(mockAssert, mockBdd)
+    const wrapped = cynthia({ assert: mockAssert, bdd: mockBdd })
     const describe = wrapped.describe as (name: string, fn: () => void) => void
     const it = wrapped.it as (name: string, fn: () => void) => void
     const assertEquals = wrapped.assertEquals as (actual: unknown, expected: unknown) => void
-    const serializeCalls = wrapped.serializeCalls as () => string
+    const serializeTest = wrapped.serializeTest as () => string
 
     describe('Calculator Functions', () => {
       it('should add correctly', () => {
@@ -197,7 +195,7 @@ describe('Cynthia Serialization', () => {
       })
     })
 
-    const serialized = serializeCalls()
+    const serialized = serializeTest()
     const expected = [
       'Describe Calculator Functions:',
       '  It should add correctly:',
@@ -208,12 +206,12 @@ describe('Cynthia Serialization', () => {
   })
 
   it('should serialize multiple assertions', () => {
-    const wrapped = cynthia(mockAssert, mockBdd)
+    const wrapped = cynthia({ assert: mockAssert, bdd: mockBdd })
     const describe = wrapped.describe as (name: string, fn: () => void) => void
     const it = wrapped.it as (name: string, fn: () => void) => void
     const assertEquals = wrapped.assertEquals as (actual: unknown, expected: unknown) => void
     const assertExists = wrapped.assertExists as (value: unknown) => void
-    const serializeCalls = wrapped.serializeCalls as () => string
+    const serializeTest = wrapped.serializeTest as () => string
 
     describe('Test Suite', () => {
       it('first test', () => {
@@ -222,7 +220,7 @@ describe('Cynthia Serialization', () => {
       })
     })
 
-    const serialized = serializeCalls()
+    const serialized = serializeTest()
     const lines = serialized.split('\n')
 
     assertEquals(lines[0], 'Describe Test Suite:')
@@ -234,11 +232,11 @@ describe('Cynthia Serialization', () => {
   it('should serialize different assertion patterns', () => {
     const mockExtendedAssert = {
       ...mockAssert,
-      assertThrows: (fn: () => void, ErrorClass: any, message: string) => {
+      assertThrows: (_fn: () => void, _ErrorClass: unknown, _message: string) => {
         try {
-          fn()
+          _fn()
           throw new Error('Expected function to throw')
-        } catch (error) {
+        } catch (_error) {
           // Expected to throw
         }
       },
@@ -250,14 +248,14 @@ describe('Cynthia Serialization', () => {
       },
     }
 
-    const wrapped = cynthia(mockExtendedAssert, mockBdd)
+    const wrapped = cynthia({ assert: mockExtendedAssert, bdd: mockBdd })
     const describe = wrapped.describe as (name: string, fn: () => void) => void
     const it = wrapped.it as (name: string, fn: () => void) => void
     const assertEquals = wrapped.assertEquals as (actual: unknown, expected: unknown) => void
-    const assertThrows = wrapped.assertThrows as (fn: () => void, ErrorClass: any, message: string) => void
+    const assertThrows = wrapped.assertThrows as (fn: () => void, ErrorClass: unknown, message: string) => void
     const assertTrue = wrapped.assertTrue as (value: boolean) => void
     const assertContains = wrapped.assertContains as (arr: unknown[], item: unknown) => void
-    const serializeCalls = wrapped.serializeCalls as () => string
+    const serializeTest = wrapped.serializeTest as () => string
 
     describe('Pattern Tests', () => {
       it('should test various patterns', () => {
@@ -274,7 +272,7 @@ describe('Cynthia Serialization', () => {
       })
     })
 
-    const serialized = serializeCalls()
+    const serialized = serializeTest()
     const lines = serialized.split('\n')
 
     assertEquals(lines[2], '    Assert that 1 equals 1')
@@ -284,11 +282,11 @@ describe('Cynthia Serialization', () => {
   })
 
   it('should handle multiple test suites', () => {
-    const wrapped = cynthia(mockAssert, mockBdd)
+    const wrapped = cynthia({ assert: mockAssert, bdd: mockBdd })
     const describe = wrapped.describe as (name: string, fn: () => void) => void
     const it = wrapped.it as (name: string, fn: () => void) => void
     const assertEquals = wrapped.assertEquals as (actual: unknown, expected: unknown) => void
-    const serializeCalls = wrapped.serializeCalls as () => string
+    const serializeTest = wrapped.serializeTest as () => string
 
     describe('First Suite', () => {
       it('first test', () => {
@@ -302,7 +300,7 @@ describe('Cynthia Serialization', () => {
       })
     })
 
-    const serialized = serializeCalls()
+    const serialized = serializeTest()
     const lines = serialized.split('\n')
 
     assertEquals(lines[0], 'Describe First Suite:')
@@ -314,18 +312,18 @@ describe('Cynthia Serialization', () => {
   })
 
   it('should handle empty serialization', () => {
-    const wrapped = cynthia(mockAssert)
-    const serializeCalls = wrapped.serializeCalls as () => string
+    const wrapped = cynthia({ assert: mockAssert, bdd: {} })
+    const serializeTest = wrapped.serializeTest as () => string
 
-    const serialized = serializeCalls()
+    const serialized = serializeTest()
     assertEquals(serialized, '')
   })
 
   it('should capitalize function names properly', () => {
-    const wrapped = cynthia(mockAssert, mockBdd)
+    const wrapped = cynthia({ assert: mockAssert, bdd: mockBdd })
     const describe = wrapped.describe as (name: string, fn: () => void) => void
     const it = wrapped.it as (name: string, fn: () => void) => void
-    const serializeCalls = wrapped.serializeCalls as () => string
+    const serializeTest = wrapped.serializeTest as () => string
 
     describe('test suite', () => {
       it('test case', () => {
@@ -333,7 +331,7 @@ describe('Cynthia Serialization', () => {
       })
     })
 
-    const serialized = serializeCalls()
+    const serialized = serializeTest()
     const lines = serialized.split('\n')
 
     assertEquals(lines[0], 'Describe test suite:')

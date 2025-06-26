@@ -1,3 +1,4 @@
+// TODO: Use the test command from the config file
 export const runDenoTests = async (testFilePath: string) => {
   const process = new Deno.Command('deno', { args: ['test', '-A', testFilePath] })
   const output = await process.output()

@@ -30,7 +30,7 @@ export const initCommand = async () => {
     console.log('Next steps:')
     console.log('  1. Set OPENAI_API_KEY environment variable')
     console.log('  2. Create a test file: cyn create my-function')
-    console.log('  3. Generate code: cyn gen my-function.cyn.ts')
+    console.log('  3. Generate code: cyn gen my-function.test.ts')
   } catch (e) {
     console.error('Error initializing project:', e)
   }

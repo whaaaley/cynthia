@@ -13,7 +13,7 @@ const configSchema = z.object({
     model: z.string().default('gpt-4o-mini'),
     temperature: z.number().min(0).max(2).default(0),
     maxTokens: z.number().optional(),
-    seed: z.number().default(Date.now()),
+    seed: z.number().default(Date.now()).optional(),
   }).default({}),
 
   // Generation Settings
