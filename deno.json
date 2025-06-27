@@ -20,6 +20,7 @@
     "singleQuote": true
   },
   "imports": {
+    "@cynthia/universal-proxy": "jsr:@cynthia/universal-proxy@^0.0.1",
     "@openai/openai": "jsr:@openai/openai@^4.81.0",
     "@std/cli": "jsr:@std/cli@^1.0.11",
     "@std/expect": "jsr:@std/expect@^1.0.12",

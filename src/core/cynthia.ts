@@ -1,4 +1,5 @@
 import { serializeCalls } from './serialize-calls.ts'
+export { default as universalProxy } from 'jsr:@cynthia/universal-proxy'
 
 type Module = Record<string, unknown>
 
@@ -11,11 +12,12 @@ type CapturedCall = {
 type CynthiaOptions = {
   assert: Module
   bdd: Module
+  expect: Module
 }
 
-export const cynthia = ({ assert, bdd }: CynthiaOptions) => {
+export const cynthia = ({ assert, bdd, expect }: CynthiaOptions) => {
   const capturedCalls: CapturedCall[] = []
-  const allExports = Object.assign({}, assert, bdd)
+  const allExports = Object.assign({}, assert, bdd, expect)
 
   const wrapped: Record<string, unknown> = {
     getCapturedCalls: () => capturedCalls,
