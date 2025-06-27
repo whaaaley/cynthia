@@ -29,5 +29,12 @@
     "change-case": "npm:change-case@^5.4.4",
     "find-up-simple": "npm:find-up-simple@^1.0.1",
     "zod": "npm:zod@^3.24.1"
+  },
+  "publish": {
+    "exclude": [
+      ".vscode/",
+      "cynthia.code-workspace",
+      "flow-chart.png"
+    ]
   }
 }
