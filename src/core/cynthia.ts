@@ -12,12 +12,11 @@ type CapturedCall = {
 type CynthiaOptions = {
   assert: Module
   bdd: Module
-  expect: Module
 }
 
-export const cynthia = ({ assert, bdd, expect }: CynthiaOptions) => {
+export const cynthia = ({ assert, bdd }: CynthiaOptions) => {
   const capturedCalls: CapturedCall[] = []
-  const allExports = Object.assign({}, assert, bdd, expect)
+  const allExports = Object.assign({}, assert, bdd)
 
   const wrapped: Record<string, unknown> = {
     getCapturedCalls: () => capturedCalls,

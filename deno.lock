@@ -1,6 +1,7 @@
 {
   "version": "5",
   "specifiers": {
+    "jsr:@cynthia/universal-proxy@*": "0.0.1",
     "jsr:@cynthia/universal-proxy@^0.0.1": "0.0.1",
     "jsr:@openai/openai@^4.81.0": "4.81.0",
     "jsr:@std/assert@*": "1.0.11",
@@ -9,8 +10,6 @@
     "jsr:@std/async@^1.0.9": "1.0.9",
     "jsr:@std/cli@^1.0.11": "1.0.11",
     "jsr:@std/data-structures@^1.0.6": "1.0.6",
-    "jsr:@std/expect@*": "1.0.12",
-    "jsr:@std/expect@^1.0.12": "1.0.12",
     "jsr:@std/fs@1": "1.0.10",
     "jsr:@std/fs@^1.0.10": "1.0.10",
     "jsr:@std/fs@^1.0.9": "1.0.10",
@@ -50,13 +49,6 @@
     },
     "@std/data-structures@1.0.6": {
       "integrity": "76a7fd8080c66604c0496220a791860492ab21a04a63a969c0b9a0609bbbb760"
-    },
-    "@std/expect@1.0.12": {
-      "integrity": "417509358ca7c10632c2a30273c952e447020767706d8c5e11f9793e00ec9d55",
-      "dependencies": [
-        "jsr:@std/assert@^1.0.11",
-        "jsr:@std/internal"
-      ]
     },
     "@std/fs@1.0.10": {
       "integrity": "bf041f9d7a0a460817f0421be8946d0e06011b3433e6c83a215628de5e3c7c2c",
@@ -182,7 +174,6 @@
       "jsr:@cynthia/universal-proxy@^0.0.1",
       "jsr:@openai/openai@^4.81.0",
       "jsr:@std/cli@^1.0.11",
-      "jsr:@std/expect@^1.0.12",
       "jsr:@std/fs@^1.0.10",
       "jsr:@std/path@^1.0.8",
       "jsr:@std/testing@^1.0.9",
