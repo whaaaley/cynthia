@@ -2,7 +2,7 @@
   "name": "@cynthia/cynthia",
   "version": "0.0.3",
   "exports": {
-    ".": "./mod.ts",
+    ".": "./main.ts",
     "./cli": "./src/cli.ts"
   },
   "bin": {
