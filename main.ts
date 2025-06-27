@@ -1,2 +1,2 @@
 export type { CynthiaConfig } from './src/config.ts'
-export { cynthia } from './src/core/cynthia.ts'
+export * from './src/core/cynthia.ts'
