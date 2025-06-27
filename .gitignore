@@ -3,6 +3,7 @@ _trash/
 tmp/
 
 .env
+cynthia.code-workspace
 
 cyn
 cyn.sh

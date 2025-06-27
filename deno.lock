@@ -5,15 +5,17 @@
     "jsr:@cynthia/universal-proxy@^0.0.1": "0.0.1",
     "jsr:@openai/openai@^4.81.0": "4.81.0",
     "jsr:@std/assert@*": "1.0.11",
-    "jsr:@std/assert@^1.0.10": "1.0.11",
+    "jsr:@std/assert@^1.0.10": "1.0.13",
     "jsr:@std/assert@^1.0.11": "1.0.11",
+    "jsr:@std/assert@^1.0.13": "1.0.13",
     "jsr:@std/async@^1.0.9": "1.0.9",
     "jsr:@std/cli@^1.0.11": "1.0.11",
     "jsr:@std/data-structures@^1.0.6": "1.0.6",
     "jsr:@std/fs@1": "1.0.10",
     "jsr:@std/fs@^1.0.10": "1.0.10",
     "jsr:@std/fs@^1.0.9": "1.0.10",
-    "jsr:@std/internal@^1.0.5": "1.0.5",
+    "jsr:@std/internal@^1.0.5": "1.0.8",
+    "jsr:@std/internal@^1.0.6": "1.0.8",
     "jsr:@std/path@1": "1.0.8",
     "jsr:@std/path@^1.0.8": "1.0.8",
     "jsr:@std/testing@*": "1.0.9",
@@ -38,7 +40,13 @@
     "@std/assert@1.0.11": {
       "integrity": "2461ef3c368fe88bc60e186e7744a93112f16fd110022e113a0849e94d1c83c1",
       "dependencies": [
-        "jsr:@std/internal"
+        "jsr:@std/internal@^1.0.5"
+      ]
+    },
+    "@std/assert@1.0.13": {
+      "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
+      "dependencies": [
+        "jsr:@std/internal@^1.0.6"
       ]
     },
     "@std/async@1.0.9": {
@@ -59,6 +67,9 @@
     "@std/internal@1.0.5": {
       "integrity": "54a546004f769c1ac9e025abd15a76b6671ddc9687e2313b67376125650dc7ba"
     },
+    "@std/internal@1.0.8": {
+      "integrity": "fc66e846d8d38a47cffd274d80d2ca3f0de71040f855783724bb6b87f60891f5"
+    },
     "@std/path@1.0.8": {
       "integrity": "548fa456bb6a04d3c1a1e7477986b6cffbce95102d0bb447c67c4ee70e0364be"
     },
@@ -69,7 +80,7 @@
         "jsr:@std/async",
         "jsr:@std/data-structures",
         "jsr:@std/fs@^1.0.9",
-        "jsr:@std/internal",
+        "jsr:@std/internal@^1.0.5",
         "jsr:@std/path@^1.0.8"
       ]
     }
@@ -173,6 +184,7 @@
     "dependencies": [
       "jsr:@cynthia/universal-proxy@^0.0.1",
       "jsr:@openai/openai@^4.81.0",
+      "jsr:@std/assert@^1.0.13",
       "jsr:@std/cli@^1.0.11",
       "jsr:@std/fs@^1.0.10",
       "jsr:@std/path@^1.0.8",

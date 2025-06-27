@@ -1,5 +1,5 @@
 import { serializeCalls } from './serialize-calls.ts'
-export { default as universalProxy } from 'jsr:@cynthia/universal-proxy'
+export { default as universalProxy } from '@cynthia/universal-proxy'
 
 type Module = Record<string, unknown>
 
