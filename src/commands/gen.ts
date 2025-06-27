@@ -7,6 +7,15 @@ import { runDenoTests } from '../utils/test-runner.ts'
 import { createPlaceholder } from './create.ts'
 
 export const genCommand = async (args: string[]) => {
+  // Early check for required environment variable
+  if (!Deno.env.get('OPENAI_API_KEY')) {
+    console.error([
+      'Error: OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.',
+      'Get your API key from: https://platform.openai.com/api-keys',
+    ].join('\n'))
+    return
+  }
+
   Deno.env.set('CYNTHIA_CAPTURE', 'true')
 
   const path = args[0]
