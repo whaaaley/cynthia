@@ -9,44 +9,44 @@ const formatValue = (value: unknown): string => {
 }
 
 const equality = (args: unknown[]) => {
-  return `Assert that ${formatValue(args[0])} equals ${formatValue(args[1])}`
+  return `Assert that the result equals ${formatValue(args[1])}`
 }
 
 const negation = (args: unknown[]) => {
-  return `Assert that ${formatValue(args[0])} does not equal ${formatValue(args[1])}`
+  return `Assert that the result does not equal ${formatValue(args[1])}`
 }
 
 const throwing = (args: unknown[]) => {
   const message = args[2] || 'an error'
-  return `Assert that function throws "${message}"`
+  return `Assert that the function should throw ${message}`
 }
 
-const existence = (args: unknown[]) => {
-  return `Assert that ${formatValue(args[0])} exists`
+const existence = () => {
+  return `Assert that the result exists`
 }
 
 const comparison = (args: unknown[], functionName: string) => {
   const operator = functionName.toLowerCase().includes('greater') ? 'greater than' : 'less than'
-  return `Assert that ${formatValue(args[0])} is ${operator} ${formatValue(args[1])}`
+  return `Assert that the result is ${operator} ${formatValue(args[1])}`
 }
 
-const boolean = (args: unknown[], functionName: string) => {
+const boolean = (_args: unknown[], functionName: string) => {
   const state = functionName.toLowerCase().includes('false') ? 'false' : 'true'
-  return `Assert that ${formatValue(args[0])} is ${state}`
+  return `Assert that the result is ${state}`
 }
 
 const contains = (args: unknown[]) => {
-  return `Assert that ${formatValue(args[0])} contains ${formatValue(args[1])}`
+  return `Assert that the result contains ${formatValue(args[1])}`
 }
 
 const type = (args: unknown[]) => {
-  return `Assert that ${formatValue(args[0])} is type ${formatValue(args[1])}`
+  return `Assert that the result is type ${formatValue(args[1])}`
 }
 
 const generic = (args: unknown[], functionName: string) => {
   const englishName = sentenceCase(functionName)
   const argStr = args.map((arg) => typeof arg === 'function' ? '[Function]' : formatValue(arg)).join(' ')
-  return `${englishName} ${argStr}`
+  return `Assert that the result ${englishName.toLowerCase()} ${argStr}`
 }
 
 const patterns = {

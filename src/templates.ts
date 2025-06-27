@@ -5,9 +5,9 @@
 
 // Template for *.ts placeholder files
 export const createPlaceholderTemplate = (filename: string) => {
-  return `export default () => {
-  // Implementation not generated yet. Run: cyn gen ${filename}.test.ts
-}`
+  return `// Implementation not generated yet. Run: cyn gen ${filename}.test.ts
+export { universalProxy as default } from 'jsr:@cynthia/cynthia'
+`
 }
 
 // Template for *.test.ts test files

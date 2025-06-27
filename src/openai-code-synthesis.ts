@@ -24,13 +24,6 @@ export const synthesize = async (testPrompt: string, cwd?: string) => {
   const config = await loadConfig(cwd)
   const apiKey = Deno.env.get('OPENAI_API_KEY')
 
-  if (!apiKey) {
-    throw new Error([
-      'Error: OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.',
-      'Get your API key from: https://platform.openai.com/api-keys',
-    ].join('\n'))
-  }
-
   const client = new OpenAI({ apiKey })
 
   console.log('Synthesizing TypeScript from test suites...')
