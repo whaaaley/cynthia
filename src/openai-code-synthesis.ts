@@ -2,7 +2,7 @@ import OpenAI from '@openai/openai'
 import { zodResponseFormat } from '@openai/openai/helpers/zod'
 import { z } from 'zod'
 import { loadConfig } from './config.ts'
-import { generatePrompts } from './core/prompt-generation.ts'
+import { generatePrompts } from './core/generate-prompts.ts'
 
 const codeBlockSchema = z.object({
   name: z.string(),
@@ -26,7 +26,7 @@ export const synthesize = async (testPrompt: string, cwd?: string) => {
 
   const client = new OpenAI({ apiKey })
 
-  console.log('Synthesizing TypeScript from test suites...')
+  console.log('Generating TypeScript from tests...')
   const { systemPrompt } = await generatePrompts(cwd)
 
   const response = await client.chat.completions.create({

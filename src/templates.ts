@@ -1,12 +1,8 @@
-// Cynthia Template Functions
-//
-// This file contains template functions that return the boilerplate
-// code for various Cynthia files and configurations.
-
 // Template for *.ts placeholder files
 export const createPlaceholderTemplate = (filename: string) => {
-  return `// Implementation not generated yet. Run: cyn gen ${filename}.test.ts
-export { universalProxy as default } from 'jsr:@cynthia/cynthia'
+  return `export default () => {
+  throw new Error('Function not implemented yet. Run "cyn gen ${filename}.test.ts" to generate it.')
+}
 `
 }
 
@@ -15,12 +11,9 @@ export const createTestFileTemplate = (filename: string) => {
   return `// @ts-nocheck: imports generated code that may not exist yet
 /* eslint-disable */
 
-import * as assert from "jsr:@std/assert"
-import * as bdd from "jsr:@std/testing/bdd"
-import { cynthia } from 'jsr:@cynthia/cynthia'
+import { assertEquals } from 'jsr:@std/assert'
+import { describe, it } from 'jsr:@std/testing/bdd'
 import testFn from './${filename}.ts'
-
-const { assertEquals, describe, it, serializeTest } = cynthia({ assert, bdd })
 
 describe('Phone number formatter', () => {
   it('should format 10-digit numbers', () => {
@@ -33,8 +26,6 @@ describe('Phone number formatter', () => {
     assertEquals(result, '(123) 456-7890')
   })
 })
-
-export default serializeTest()
 `
 }
 

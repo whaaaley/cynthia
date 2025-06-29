@@ -1,8 +1,3 @@
-// Cynthia CLI Entry Point
-//
-// This file provides the main CLI interface for the Cynthia tool,
-// routing commands to their respective implementations.
-
 import { parseArgs } from '@std/cli'
 import { createCommand } from './commands/create.ts'
 import { genCommand } from './commands/gen.ts'
