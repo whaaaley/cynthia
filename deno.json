@@ -1,10 +1,10 @@
 {
   "name": "@cynthia/cynthia",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "repository": "https://github.com/whaaaley/cynthia",
-  "exports": {
-    "./cli": "./src/cli.ts"
-  },
+  "description": "A code synthesis command line tool that brings structure to AI-powered development.",
+  "runtimes": ["deno"],
+  "exports": "./src/cli.ts",
   "bin": {
     "cyn": "./bin/cyn.ts"
   },

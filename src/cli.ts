@@ -1,3 +1,24 @@
+/**
+ * The main entrypoint for the Cynthia CLI.
+ *
+ * Exports the {@link main} function, which parses CLI arguments and dispatches
+ * to the appropriate command handler for Cynthia's code synthesis workflow.
+ *
+ * @module
+ */
+
+/**
+ * Cynthia CLI entrypoint.
+ *
+ * Exports the main CLI handler and command routing for Cynthia's code synthesis tool.
+ *
+ * Commands:
+ *   - create: Create new test file with boilerplate
+ *   - gen: Generate code from tests
+ *   - init: Initialize Cynthia project
+ *   - test: Run tests
+ */
+
 import { parseArgs } from '@std/cli'
 import { createCommand } from './commands/create.ts'
 import { genCommand } from './commands/gen.ts'
@@ -17,6 +38,20 @@ Options:
   -h, --help      Show help
   -v, --version   Show version` as const
 
+/**
+ * The main CLI handler for Cynthia.
+ *
+ * Parses command-line arguments and routes to the correct subcommand.
+ *
+ * @param args - The command-line arguments passed to the CLI.
+ * @returns A promise that resolves when the command completes.
+ *
+ * @example
+ * ```ts
+ * import { main } from "@cynthia/cynthia";
+ * await main(["gen", "my-test-file.test.ts"]);
+ * ```
+ */
 export const main = async (args: string[]) => {
   const { _, ...parsedArgs } = parseArgs(args, {
     string: [],
@@ -31,7 +66,7 @@ export const main = async (args: string[]) => {
   }
 
   if (parsedArgs.version) {
-    console.log('Cynthia CLI v0.0.1')
+    console.log('Cynthia CLI 0.0.6')
     return
   }
 
