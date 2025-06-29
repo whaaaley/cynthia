@@ -1,6 +1,7 @@
 {
   "name": "@cynthia/cynthia",
-  "version": "0.0.4",
+  "version": "0.0.5",
+  "repository": "https://github.com/whaaaley/cynthia",
   "exports": {
     "./cli": "./src/cli.ts"
   },
