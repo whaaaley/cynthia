@@ -1,6 +1,6 @@
 {
   "name": "@cynthia/cynthia",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "exports": {
     ".": "./main.ts",
     "./cli": "./src/cli.ts"
