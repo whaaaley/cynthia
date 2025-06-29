@@ -1,10 +1,10 @@
 import { join, parse, relative } from '@std/path'
 import { findUp } from 'find-up-simple'
 import { loadConfig } from '../config.ts'
+import { testMorph } from '../core/test-morph.ts'
 import { synthesize } from '../openai-code-synthesis.ts'
 import { retryWithCallback } from '../utils/retry-with-callback.ts'
 import { runDenoTests } from '../utils/test-runner.ts'
-import { createPlaceholder } from './create.ts'
 
 export const genCommand = async (args: string[]) => {
   // Early check for required environment variable
@@ -16,8 +16,6 @@ export const genCommand = async (args: string[]) => {
     return
   }
 
-  Deno.env.set('CYNTHIA_CAPTURE', 'true')
-
   const path = args[0]
   if (!path) {
     console.error('Error: filepath is required')
@@ -26,13 +24,6 @@ export const genCommand = async (args: string[]) => {
 
   try {
     const cwd = Deno.cwd()
-    const fullPath = join(cwd, path)
-    const parsedPath = parse(fullPath)
-    const name = parse(parse(path).name).name
-
-    const config = await loadConfig(cwd)
-    await createPlaceholder(name)
-    const mod = await import(`file://${fullPath}`)
 
     const cynthiaDir = await findUp('.cynthia', { cwd, type: 'directory' })
     if (!cynthiaDir) {
@@ -40,8 +31,15 @@ export const genCommand = async (args: string[]) => {
       return // Exit early if no .cynthia directory
     }
 
+    const fullPath = join(cwd, path)
+
+    const prompt = testMorph(fullPath)
+    const parsedPath = parse(fullPath)
+
+    const config = await loadConfig(cwd)
+    const name = parse(parse(path).name).name
+
     const generateAndTest = async () => {
-      const prompt = mod.default
       const result = await synthesize(prompt, cwd)
 
       if (!result.code || !result.code.trim()) {
@@ -51,10 +49,10 @@ export const genCommand = async (args: string[]) => {
       // Write the generated files
       const base = `${Date.now()}-${name}`
       const genPath = join(cynthiaDir, `${base}.gen.ts`)
-      const promptPath = join(cynthiaDir, `${base}.prompt.txt`)
+      const featurePath = join(cynthiaDir, `${base}.feature`)
 
       await Deno.writeFile(genPath, new TextEncoder().encode(result.code))
-      await Deno.writeFile(promptPath, new TextEncoder().encode(result.prompt))
+      await Deno.writeFile(featurePath, new TextEncoder().encode(result.prompt))
 
       const relPath = relative(parsedPath.dir, genPath)
       const expPath = join(parsedPath.dir, `${parse(parsedPath.name).name}.ts`)

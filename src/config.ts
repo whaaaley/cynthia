@@ -1,8 +1,3 @@
-// Cynthia Configuration Management
-//
-// This file handles loading and validating configuration from cynthia.config.json
-// and provides defaults for all configurable options.
-
 import { findUp } from 'find-up-simple'
 import { z } from 'zod'
 

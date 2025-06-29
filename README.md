@@ -23,7 +23,8 @@ A code synthesis command line tool that brings structure to AI-powered developme
 
 If you're going to use AI to write code, you need to test thoroughly.
 
-Cynthia is test-driven development with AI. You write unit tests first, then let AI implement the solution. Your tests both specify exactly what you want and automatically verify that the generated code works correctly.
+Cynthia is test-driven development with AI. You write unit tests first, then let AI implement the solution.
+Your tests both specify exactly what you want and automatically verify that the generated code works correctly.
 
 ## How do generations work?
 
@@ -45,18 +46,22 @@ cyn create phone-number-formatter
 
 This creates `phone-number-formatter.test.ts` in the current directory with a starter template and `phone-number-formatter.ts` as a placeholder implementation file.
 
-3. Write your synthetic function using BDD-style tests:
+3. Write your test cases:
+
+Cynthia requires your tests to use `deno test` (other test runners are not supported).
+
+For prompt generation to work correctly:
+
+- The function under test must be called `testFn`.
+- You must assign the result of calling `testFn(...)` to a variable (for example, `const result = testFn(...)`).
 
 ```ts
 // @ts-nocheck: imports generated code that may not exist yet
 /* eslint-disable */
 
-import * as assert from 'jsr:@std/assert'
-import * as bdd from 'jsr:@std/testing/bdd'
-import { cynthia } from 'jsr:@cynthia/cynthia'
+import { assertEquals } from 'jsr:@std/assert'
+import { describe, it } from 'jsr:@std/testing/bdd'
 import testFn from './phone-number-formatter.ts'
-
-const { assertEquals, describe, it, serializeTest } = cynthia({ assert, bdd })
 
 describe('Phone number formatter', () => {
   it('should format 10-digit numbers', () => {
@@ -74,8 +79,6 @@ describe('Phone number formatter', () => {
     assertEquals(result, '(123) 456-7890')
   })
 })
-
-export default serializeTest()
 ```
 
 4. Generate your synthetic function:
@@ -86,7 +89,8 @@ Ensure that you have your `OPENAI_API_KEY` in your environment:
 export OPENAI_API_KEY="your-api-key-here"
 ```
 
-Get your API key from [OpenAI's platform](https://platform.openai.com/api-keys). The default model is `gpt-4o-mini` but this can be configured (see [Configuration](#configuration) section).
+Get your API key from [OpenAI's platform](https://platform.openai.com/api-keys).
+The default model is `gpt-4o-mini` but this can be configured (see [Configuration](#configuration) section).
 
 ```sh
 cyn gen phone-number-formatter.test.ts
@@ -96,10 +100,10 @@ Wait while your function is generated and tested. On success, you'll get:
 
 - `phone-number-formatter.ts` next to your test file
 - `1738397981482-phone-number-formatter.gen.ts` in your `.cynthia` directory
-- `1738397981482-phone-number-formatter.prompt.txt` in your `.cynthia` directory
+- `1738397981482-phone-number-formatter.feature` in your `.cynthia` directory
 
-The `.gen.ts` file contains the LLM output while the `.ts` file is just an export of the `.gen.ts` file's default export, allowing easy rollbacks when you forget test cases or the LLM gets creative. The `.prompt.txt` file contains the exact
-prompt sent to the LLM for debugging purposes.
+The `.gen.ts` file contains the LLM output while the `.ts` file is just an export of the `.gen.ts` file's default export, allowing easy rollbacks when tests fail or the LLM gets creative.
+The `.feature` file contains the exact prompt sent to the LLM for debugging purposes.
 
 5. Use your generated code:
 
@@ -158,7 +162,8 @@ Use switch for multiple conditions
 
 ### Behavior
 
-Cynthia searches for `.vscode/instructions/cynthia.instructions.md` by walking up the directory tree from the current working directory. Instructions are added to the code generation prompt. Works from any subdirectory.
+Cynthia searches for `.vscode/instructions/cynthia.instructions.md` by walking up the directory tree from the current working directory.
+Any instructions found are appended to the bottom of the prompt for each generation. This works from any subdirectory.
 
 ## Installation
 
@@ -205,7 +210,8 @@ If it can't, you might need to refine your test cases or break down complex requ
 
 ### What if I write an impossible test?
 
-Cynthia will attempt to solve it multiple times before giving up gracefully. The system is designed to handle edge cases and provide clear feedback about what went wrong.
+Cynthia will attempt to solve it multiple times before giving up gracefully.
+The system is designed to handle edge cases and provide clear feedback about what went wrong.
 
 ### How to contribute
 
@@ -225,11 +231,13 @@ Cynthia provides a structured approach to AI-assisted development. It's particul
 
 ## Important Considerations
 
-While AI-assisted development can be incredibly productive, it's important to understand what you're building. Cynthia encourages good practices by requiring you to write comprehensive tests first, but you should still:
+While AI-assisted development can be incredibly productive, it's important to understand what you're building.
+Cynthia encourages good practices by requiring you to write comprehensive tests first, but you should still:
 
 - Understand the problem you're trying to solve
 - Review and understand the generated code
 - Add additional test cases as you discover edge cases
 - Use this as a tool to enhance your development workflow, not replace your understanding
 
-Cynthia aims to bring structure and testing discipline to AI-powered development. By requiring test-first development, you'll end up with better specifications and more reliable code.
+Cynthia aims to bring structure and testing discipline to AI-powered development.
+By requiring test-first development, you'll end up with better specifications and more reliable code.
