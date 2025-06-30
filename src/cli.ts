@@ -7,6 +7,8 @@
  * @module
  */
 
+export type { CynthiaConfig } from './config.ts'
+
 /**
  * Cynthia CLI entrypoint.
  *
