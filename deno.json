@@ -34,7 +34,9 @@
     "exclude": [
       ".vscode/",
       "cynthia.code-workspace",
-      "flow-chart.png"
+      "cynthia.webp",
+      "flow-chart.png",
+      "README.md"
     ]
   }
 }
