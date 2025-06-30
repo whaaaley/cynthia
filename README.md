@@ -2,6 +2,8 @@
 
 A code synthesis command line tool that brings structure to AI-powered development.
 
+![cynthia-animation](cynthia.webp)
+
 ## Table of Contents
 
 - [Roadmap](#roadmap)
