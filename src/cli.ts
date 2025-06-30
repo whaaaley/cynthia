@@ -66,7 +66,7 @@ export const main = async (args: string[]) => {
   }
 
   if (parsedArgs.version) {
-    console.log('Cynthia CLI 0.0.6')
+    console.log('Cynthia CLI 0.0.7')
     return
   }
 

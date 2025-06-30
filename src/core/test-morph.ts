@@ -1,4 +1,4 @@
-import { type CallExpression, Project, ScriptTarget, SyntaxKind } from '@ts-morph/ts-morph'
+import { type CallExpression, Project, ScriptTarget, SyntaxKind } from 'ts-morph'
 import { assertionPatterns } from '../utils/assertion-patterns.ts'
 
 type BuildTreeResult = {
