@@ -1,6 +1,6 @@
 {
   "name": "@cynthia/cynthia",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "repository": "https://github.com/whaaaley/cynthia",
   "description": "A code synthesis command line tool that brings structure to AI-powered development.",
   "runtimes": ["deno"],
@@ -26,8 +26,8 @@
     "@std/fs": "jsr:@std/fs@^1.0.10",
     "@std/path": "jsr:@std/path@^1.0.8",
     "@std/testing": "jsr:@std/testing@^1.0.9",
-    "@ts-morph/ts-morph": "jsr:@ts-morph/ts-morph@^26.0.0",
     "find-up-simple": "npm:find-up-simple@^1.0.1",
+    "ts-morph": "jsr:@ts-morph/ts-morph@^26.0.0",
     "zod": "npm:zod@^3.24.1"
   },
   "publish": {
