@@ -1,6 +1,6 @@
 {
   "name": "@cynthia/cynthia",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "repository": "https://github.com/whaaaley/cynthia",
   "description": "A code synthesis command line tool that brings structure to AI-powered development.",
   "runtimes": ["deno"],

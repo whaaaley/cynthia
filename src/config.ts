@@ -2,7 +2,9 @@ import { findUp } from 'find-up-simple'
 import { z } from 'zod'
 
 // Configuration schema with validation
-const configSchema = z.object({
+// Note: z.ZodType<unknown> annotation is required by JSR for explicit typing
+// This doesn't affect runtime behavior or user types - z.infer still works perfectly
+export const configSchema: z.ZodType<unknown> = z.object({
   // OpenAI Configuration
   openai: z.object({
     model: z.string().default('gpt-4o-mini'),
