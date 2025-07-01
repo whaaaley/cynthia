@@ -20,6 +20,7 @@ A code synthesis command line tool that brings structure to AI-powered developme
 - [ ] Benchmarks and performance thresholds
 - [ ] Add more models + DeepSeek R1 by default (Use Unified AI SDK)
 - [ ] Add a journal feature similar to drizzle-journal (status, history, rollbacks)
+- [ ] Read test failures from stdout to improve next attempt
 
 ## Why?
 
