@@ -2,24 +2,15 @@ import { join, parse, relative } from '@std/path'
 import { findUp } from 'find-up-simple'
 import { loadConfig } from '../config.ts'
 import { testMorph } from '../core/test-morph.ts'
-import { synthesize } from '../openai-code-synthesis.ts'
+import { synthesize } from '../llm-exe-synthesis.ts'
 import { retryWithCallback } from '../utils/retry-with-callback.ts'
 import { runDenoTests } from '../utils/test-runner.ts'
 
 export const genCommand = async (args: string[]) => {
-  // Early check for required environment variable
-  if (!Deno.env.get('OPENAI_API_KEY')) {
-    console.error([
-      'Error: OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.',
-      'Get your API key from: https://platform.openai.com/api-keys',
-    ].join('\n'))
-    return
-  }
-
   const path = args[0]
   if (!path) {
     console.error('Error: filepath is required')
-    return // Exit early if no path is provided
+    return
   }
 
   try {
@@ -28,7 +19,7 @@ export const genCommand = async (args: string[]) => {
     const cynthiaDir = await findUp('.cynthia', { cwd, type: 'directory' })
     if (!cynthiaDir) {
       console.error('No .cynthia directory found. Run "cyn init" first.')
-      return // Exit early if no .cynthia directory
+      return
     }
 
     const fullPath = join(cwd, path)
@@ -46,7 +37,6 @@ export const genCommand = async (args: string[]) => {
         throw new Error('Generated code or prompt is empty')
       }
 
-      // Write the generated files
       const base = `${Date.now()}-${name}`
       const genPath = join(cynthiaDir, `${base}.gen.ts`)
       const featurePath = join(cynthiaDir, `${base}.feature`)
@@ -58,23 +48,16 @@ export const genCommand = async (args: string[]) => {
       const expPath = join(parsedPath.dir, `${parse(parsedPath.name).name}.ts`)
       await Deno.writeFile(expPath, new TextEncoder().encode(`export { default } from './${relPath}'`))
 
-      // Run tests if configured
-      if (config.testing.runTestsAfterGeneration) {
-        const exitCode = await runDenoTests(fullPath)
-        return { testsPass: exitCode === 0 }
-      }
-
-      // If we're not running tests, consider it successful
-      return { testsPass: true }
+      const exitCode = await runDenoTests(fullPath)
+      return { testsPass: exitCode === 0 }
     }
 
     const validateSuccess = (result: { testsPass: boolean }) => result.testsPass
 
-    // Retry generation until tests pass
     await retryWithCallback({
       operation: generateAndTest,
       isSuccess: validateSuccess,
-      maxRetries: config.generation.maxRetries,
+      maxRetries: config.maxRetries,
       operationName: 'Agentic code generation and test validation',
     })
 

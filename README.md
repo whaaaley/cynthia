@@ -7,6 +7,7 @@ A code synthesis command line tool that brings structure to AI-powered developme
 ## Table of Contents
 
 - [Roadmap](#roadmap)
+- [Dependencies](#dependencies)
 - [Why?](#why)
 - [How do generations work?](#how-do-generations-work)
 - [Configuration](#configuration)
@@ -22,11 +23,20 @@ A code synthesis command line tool that brings structure to AI-powered developme
 - [ ] Add a journal feature similar to drizzle-journal (status, history, rollbacks)
 - [ ] Read test failures from stdout to improve next attempt
 
+## Dependencies
+
+- [find-up-simple](https://github.com/sindresorhus/find-up-simple)
+- [llm-exe](https://github.com/gregreindel/llm-exe)
+- [ts-morph](https://github.com/dsherret/ts-morph)
+- [zod-to-json-schema](https://github.com/StefanTerdell/zod-to-json-schema)
+- [zod](https://github.com/colinhacks/zod)
+
 ## Why?
 
 If you're going to use AI to write code, you need to test thoroughly.
 
-Cynthia is test-driven development with AI. You write unit tests first, then let AI implement the solution.
+Cynthia is test-driven development with AI.
+You write unit tests first, then let AI implement the solution.
 Your tests both specify exactly what you want and automatically verify that the generated code works correctly.
 
 ## How do generations work?
@@ -166,7 +176,8 @@ Use switch for multiple conditions
 ### Behavior
 
 Cynthia searches for `.vscode/instructions/cynthia.instructions.md` by walking up the directory tree from the current working directory.
-Any instructions found are appended to the bottom of the prompt for each generation. This works from any subdirectory.
+Any instructions found are appended to the bottom of the prompt for each generation.
+This works from any subdirectory.
 
 ## Installation
 

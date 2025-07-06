@@ -34,19 +34,18 @@ export const createConfigTemplate = () => {
   return `import type { CynthiaConfig } from 'jsr:@cynthia/cynthia'
 
 const config: CynthiaConfig = {
-  openai: {
-    model: 'gpt-4o-mini',
-    temperature: 0,
+  llm: {
+    provider: 'openai.gpt-4o-mini',
+    options: {
+      temperature: 0,
+      // openAIApiKey: 'your-api-key', // or use OPENAI_API_KEY environment variable
+    },
   },
-  generation: {
-    maxRetries: 3,
-  },
-  testing: {
-    runTestsAfterGeneration: true,
-  },
-  cli: {
-    confirmGenerations: false,
-  },
+
+  // Optional: Override defaults
+  // maxRetries: 5,
+  // selfRefinement: false,
+  // refinementLoops: 5,
 }
 
 export default config
