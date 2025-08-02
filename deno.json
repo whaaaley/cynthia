@@ -26,6 +26,8 @@
     "@std/fs": "jsr:@std/fs@^1.0.10",
     "@std/path": "jsr:@std/path@^1.0.8",
     "@std/testing": "jsr:@std/testing@^1.0.9",
+
+    "fast-xml-parser": "npm:fast-xml-parser@^5.2.5",
     "find-up-simple": "npm:find-up-simple@^1.0.1",
     "llm-exe": "npm:llm-exe@^2.2.0",
     "ts-morph": "jsr:@ts-morph/ts-morph@^26.0.0",

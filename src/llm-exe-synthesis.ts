@@ -2,7 +2,7 @@ import { createChatPrompt, createLlmExecutor, createParser, useLlm } from 'llm-e
 import { z } from 'zod'
 import { zodToJsonSchema } from 'zod-to-json-schema'
 import { loadConfig } from './config.ts'
-import { createPrompts } from './core/create-prompts.ts.tsx'
+import { createPrompts } from './core/create-prompts.ts'
 
 export const codeBlockSchema = z.object({
   name: z.string(),

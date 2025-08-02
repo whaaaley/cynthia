@@ -1,6 +1,6 @@
 import { assertEquals } from 'jsr:@std/assert'
 import { describe, it } from 'jsr:@std/testing/bdd'
-import type { TestFailure } from '../src/core/create-prompts.ts.tsx'
+import type { TestFailure } from '../src/core/create-prompts.ts'
 import { refineCode, type TestResult } from '../src/utils/self-refinement.ts'
 
 describe('Self-Refinement System', () => {

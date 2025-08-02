@@ -22,6 +22,7 @@
     "jsr:@ts-morph/common@0.27": "0.27.0",
     "jsr:@ts-morph/ts-morph@26": "26.0.0",
     "npm:@types/node@*": "22.15.15",
+    "npm:fast-xml-parser@^5.2.5": "5.2.5",
     "npm:find-up-simple@^1.0.1": "1.0.1",
     "npm:llm-exe@^2.2.0": "2.2.0",
     "npm:zod-to-json-schema@^3.24.6": "3.24.6_zod@3.24.1",
@@ -234,7 +235,7 @@
         "@smithy/smithy-client",
         "@smithy/types",
         "@smithy/util-middleware",
-        "fast-xml-parser",
+        "fast-xml-parser@4.4.1",
         "tslib"
       ]
     },
@@ -895,7 +896,14 @@
     "fast-xml-parser@4.4.1": {
       "integrity": "sha512-xkjOecfnKGkSsOwtZ5Pz7Us/T6mrbPQrq0nh+aCO5V9nk5NLWmasAHumTKjiPJPWANe+kAZ84Jc8ooJkzZ88Sw==",
       "dependencies": [
-        "strnum"
+        "strnum@1.1.2"
+      ],
+      "bin": true
+    },
+    "fast-xml-parser@5.2.5": {
+      "integrity": "sha512-pfX9uG9Ki0yekDHx2SiuRIyFdyAr1kMIMitPvb0YBo8SUfKvia7w7FIyd/l6av85pFYRhZscS75MwMnbvY+hcQ==",
+      "dependencies": [
+        "strnum@2.1.1"
       ],
       "bin": true
     },
@@ -949,6 +957,9 @@
     },
     "strnum@1.1.2": {
       "integrity": "sha512-vrN+B7DBIoTTZjnPNewwhx6cBA/H+IS7rfW68n7XxC1y7uoiGQBxaKzqucGUgavX15dJgiGztLJ8vxuEzwqBdA=="
+    },
+    "strnum@2.1.1": {
+      "integrity": "sha512-7ZvoFTiCnGxBtDqJ//Cu6fWtZtc7Y3x+QOirG15wztbdngGSkht27o2pyGWrVy0b4WAy3jbKmnoK6g5VlVNUUw=="
     },
     "ts-algebra@2.0.0": {
       "integrity": "sha512-FPAhNPFMrkwz76P7cdjdmiShwMynZYN6SgOujD1urY4oNm80Ou9oMdmbR45LotcKOXoy7wSmHkRFE6Mxbrhefw=="
@@ -1062,6 +1073,7 @@
       "jsr:@std/path@^1.0.8",
       "jsr:@std/testing@^1.0.9",
       "jsr:@ts-morph/ts-morph@26",
+      "npm:fast-xml-parser@^5.2.5",
       "npm:find-up-simple@^1.0.1",
       "npm:llm-exe@^2.2.0",
       "npm:zod-to-json-schema@^3.24.6",

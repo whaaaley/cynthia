@@ -1,4 +1,4 @@
-import { createRefinementPrompt, type TestFailure } from '../core/create-prompts.ts.tsx'
+import { createRefinementPrompt, type TestFailure } from '../core/create-prompts.ts'
 
 export type TestResult = {
   testsPass: boolean
