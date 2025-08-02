@@ -30,11 +30,11 @@ export const genCommand = async (args: string[]) => {
     const config = await loadConfig(cwd)
     const name = parse(parse(path).name).name
 
-    const generateAndTest = async () => {
+    const createAndTest = async () => {
       const result = await synthesize(prompt, cwd)
 
       if (!result.code || !result.code.trim()) {
-        throw new Error('Generated code or prompt is empty')
+        throw new Error('Created code or prompt is empty')
       }
 
       const base = `${Date.now()}-${name}`
@@ -55,7 +55,7 @@ export const genCommand = async (args: string[]) => {
     const validateSuccess = (result: { testsPass: boolean }) => result.testsPass
 
     await retryWithCallback({
-      operation: generateAndTest,
+      operation: createAndTest,
       isSuccess: validateSuccess,
       maxRetries: config.maxRetries,
       operationName: 'Agentic code generation and test validation',

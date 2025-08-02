@@ -2,7 +2,7 @@ import { createChatPrompt, createLlmExecutor, createParser, useLlm } from 'llm-e
 import { z } from 'zod'
 import { zodToJsonSchema } from 'zod-to-json-schema'
 import { loadConfig } from './config.ts'
-import { generatePrompts } from './core/generate-prompts.ts'
+import { createPrompts } from './core/create-prompts.ts.tsx'
 
 export const codeBlockSchema = z.object({
   name: z.string(),
@@ -21,8 +21,8 @@ export const codeBlockSchema = z.object({
 export const synthesize = async (testPrompt: string, cwd?: string) => {
   const config = await loadConfig(cwd)
 
-  console.log('Generating TypeScript from tests...')
-  const { systemPrompt } = await generatePrompts(cwd)
+  console.log('Creating TypeScript from tests...')
+  const { systemPrompt } = await createPrompts(cwd)
 
   const llm = useLlm(config.llm.provider, config.llm.options)
   const prompt = createChatPrompt(systemPrompt).addUserMessage(testPrompt)
