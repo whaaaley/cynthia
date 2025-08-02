@@ -25,7 +25,6 @@
     "npm:fast-xml-parser@^5.2.5": "5.2.5",
     "npm:find-up-simple@^1.0.1": "1.0.1",
     "npm:llm-exe@^2.3.1": "2.3.1",
-    "npm:zod-to-json-schema@^3.24.6": "3.24.6_zod@4.0.14",
     "npm:zod@3": "3.25.76",
     "npm:zod@^4.0.14": "4.0.14"
   },
@@ -985,12 +984,6 @@
     "wordwrap@1.0.0": {
       "integrity": "sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q=="
     },
-    "zod-to-json-schema@3.24.6_zod@4.0.14": {
-      "integrity": "sha512-h/z3PKvcTcTetyjl1fkj79MHNEjm+HpD6NXheWjzOekY7kV+lwDYnHw+ivHkijnCSMz1yJaWBD9vu/Fcmk+vEg==",
-      "dependencies": [
-        "zod@4.0.14"
-      ]
-    },
     "zod@3.25.76": {
       "integrity": "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="
     },
@@ -1079,7 +1072,6 @@
       "npm:fast-xml-parser@^5.2.5",
       "npm:find-up-simple@^1.0.1",
       "npm:llm-exe@^2.3.1",
-      "npm:zod-to-json-schema@^3.24.6",
       "npm:zod@^4.0.14"
     ]
   }

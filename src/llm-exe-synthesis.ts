@@ -1,6 +1,5 @@
 import { createChatPrompt, createLlmExecutor, createParser, useLlm } from 'llm-exe'
 import { z } from 'zod'
-import { zodToJsonSchema } from 'zod-to-json-schema'
 import { loadConfig } from './config.ts'
 import { createPrompts } from './core/create-prompts.ts'
 
@@ -26,24 +25,15 @@ export const synthesize = async (testPrompt: string, cwd?: string) => {
 
   const llm = useLlm(config.llm.provider, config.llm.options)
   const prompt = createChatPrompt(systemPrompt).addUserMessage(testPrompt)
-  const parser = createParser('json', { schema: zodToJsonSchema(codeBlockSchema) })
+  const parser = createParser('json', { schema: z.toJSONSchema(codeBlockSchema) })
 
   const executor = createLlmExecutor({ llm, prompt, parser })
 
-  try {
-    const response = await executor.execute({})
-    const validatedResponse = codeBlockSchema.parse(response)
+  const response = await executor.execute({})
+  const validatedResponse = codeBlockSchema.parse(response)
 
-    return {
-      code: validatedResponse.code,
-      prompt: testPrompt,
-    }
-  } catch (error) {
-    console.error('Error generating code:', error)
-
-    return {
-      code: '',
-      prompt: testPrompt,
-    }
+  return {
+    code: validatedResponse.code,
+    prompt: testPrompt,
   }
 }

@@ -32,8 +32,7 @@
     "find-up-simple": "npm:find-up-simple@^1.0.1",
     "llm-exe": "npm:llm-exe@^2.3.1",
     "ts-morph": "jsr:@ts-morph/ts-morph@^26.0.0",
-    "zod": "npm:zod@^4.0.14",
-    "zod-to-json-schema": "npm:zod-to-json-schema@^3.24.6"
+    "zod": "npm:zod@^4.0.14"
   },
   "publish": {
     "exclude": [
