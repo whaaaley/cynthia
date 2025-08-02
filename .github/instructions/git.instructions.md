@@ -25,6 +25,9 @@ Reason: Keep commits concise and focused on the core change
 Rule: Avoid adding automated tool attribution, metadata, or AI assistant co-authors (opencode, copilot, windsurf, cursor) in commit messages
 Reason: Keep commit history clean and focused on human contributors
 
+Rule: Never include "Co-Authored-By" lines with opencode
+Reason: Explicitly prevents opencode attribution in commit history
+
 Rule: Only use basic local git commands: add, commit, status, log, and reset --soft. No remote operations or branching.
 Reason: Keep git usage minimal and safe for basic version control
 
