@@ -7,6 +7,9 @@ Reason: Readable in git log and matches git's own conventions
 Rule: Use `feat:` for new features, `fix:` for bug fixes, `docs:` for documentation, `refactor:` for code restructuring, `test:` for testing, `chore:` for maintenance
 Reason: Core types for semantic versioning and clear categorization
 
+Rule: Use `chore:` for changes to instruction files (.github/instructions/)
+Reason: Instruction updates are maintenance tasks, not user-facing features
+
 Rule: Add `!` after type or `BREAKING CHANGE:` in footer for breaking changes
 Reason: Signals major version bumps in semantic versioning
 
