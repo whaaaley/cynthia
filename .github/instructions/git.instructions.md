@@ -19,6 +19,9 @@ Reason: Easier to review, revert, and understand history
 Rule: Use body to explain what and why, not how
 Reason: Code shows how, commit message explains motivation
 
+Rule: Avoid adding commit message body/description unless specifically requested
+Reason: Keep commits concise and focused on the core change
+
 Rule: Avoid adding automated tool attribution, metadata, or AI assistant co-authors (opencode, copilot, windsurf, cursor) in commit messages
 Reason: Keep commit history clean and focused on human contributors
 
