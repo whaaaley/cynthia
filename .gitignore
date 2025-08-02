@@ -1,5 +1,6 @@
 _trash/
 .cynthia/
+.secrets/
 tmp/
 
 .env
