@@ -21,3 +21,6 @@ Reason: Keep commit history clean and focused on human contributors
 
 Rule: Only use basic local git commands: add, commit, status, log, and reset --soft. No remote operations or branching.
 Reason: Keep git usage minimal and safe for basic version control
+
+Rule: Never commit without first asking for explicit confirmation
+Reason: Prevents accidental commits and ensures user control over version history
