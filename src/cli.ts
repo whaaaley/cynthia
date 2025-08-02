@@ -68,7 +68,8 @@ export const main = async (args: string[]) => {
   }
 
   if (parsedArgs.version) {
-    console.log('Cynthia CLI 0.0.9')
+    const denoConfig = JSON.parse(await Deno.readTextFile(new URL('../deno.json', import.meta.url)))
+    console.log(`Cynthia CLI ${denoConfig.version}`)
     return
   }
 
