@@ -1,17 +1,24 @@
 import { findUp } from 'find-up-simple'
 import { z } from 'zod'
 
+export const providers = [
+  'openai.gpt-4o-mini',
+  'openai.gpt-4o',
+  'anthropic.claude-3-opus',
+  'google.gemini-2.0-flash',
+  'deepseek.chat',
+] as const
+
+export type Provider = typeof providers[number]
+
+// Note: configSchema has implicit complex type that would trigger JSR slow-types
+// This is acceptable for internal use - explicit typing would be too verbose
+
 export const configSchema = z.object({
   // LLM configuration (maps directly to llm-exe useLlm calls)
   llm: z.object({
-    provider: z.enum([
-      'openai.gpt-4o-mini',
-      'openai.gpt-4o',
-      'anthropic.claude-3-opus',
-      'google.gemini-2.0-flash',
-      'deepseek.chat',
-    ]).default('openai.gpt-4o-mini'),
-    options: z.object({}).passthrough().default({}), // any llm-exe provider options
+    provider: z.enum(providers).default('openai.gpt-4o-mini'),
+    options: z.object({}).passthrough().default({}),
   }).default({}),
 
   // Cynthia-specific
