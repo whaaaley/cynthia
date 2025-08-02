@@ -37,5 +37,17 @@
         "write": true
       }
     }
+  },
+  "permission": {
+    "bash": {
+      "cd*": "allow",
+      "ls*": "allow",
+      "pwd*": "allow",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "deno task test*": "allow",
+      "*": "ask"
+    }
   }
 }
