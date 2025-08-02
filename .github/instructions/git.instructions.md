@@ -22,3 +22,6 @@ Reason: Code shows how, commit message explains motivation
 
 Rule: Avoid adding automated tool attribution or metadata to commit messages
 Reason: Keep commit history clean and focused on human-readable content
+
+Rule: Use `git reset --soft HEAD~1` to undo commits, never use `--hard`
+Reason: Preserves working directory changes and allows granular recommit
