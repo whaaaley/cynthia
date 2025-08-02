@@ -35,7 +35,7 @@ const defaultConfig: CynthiaConfig = {
     provider: 'openai.gpt-4o-mini',
     options: {
       temperature: 0,
-      ...(env.OPENAI_API_KEY && { openAIApiKey: env.OPENAI_API_KEY }),
+      openAIApiKey: env.OPENAI_API_KEY,
     },
   },
   maxRetries: 3,
