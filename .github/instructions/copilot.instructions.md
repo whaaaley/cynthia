@@ -40,3 +40,6 @@ Reason: Standard project setup
 
 Rule: If commands fail due to missing environment variables, try `env $(cat .env)` prefix.
 Reason: Loads environment variables from .env file
+
+Rule: Never remove files without first asking for explicit confirmation.
+Reason: Prevents accidental data loss

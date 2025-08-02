@@ -1,6 +1,3 @@
----
----
-
 Rule: Use conventional commit format: `<type>[optional scope]: <description>`
 Reason: Enables automated tooling and clear communication
 
