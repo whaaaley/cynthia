@@ -3,6 +3,7 @@
   "theme": "opencode",
   "instructions": [
     ".github/instructions/copilot.instructions.md",
+    ".github/instructions/git.instructions.md",
     ".github/instructions/old.instructions.md",
     ".github/instructions/project.instructions.md"
   ],
