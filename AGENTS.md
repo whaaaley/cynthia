@@ -19,3 +19,8 @@
 - Use `git mv` for file moves, combine similar commands
 - Use `grep`/`find`/`ls` for searching, not manual editing
 - Load env vars: `env $(cat .env)` prefix if commands fail
+
+## Personalization
+- Instructions loaded from `.github/instructions/copilot.instructions.md`
+- Searches up directory tree from current working directory
+- Instructions appended to generation prompts automatically
