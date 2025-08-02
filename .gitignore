@@ -1,4 +1,5 @@
 _trash/
+.audits/
 .cynthia/
 .secrets/
 tmp/
@@ -12,4 +13,3 @@ cyn.exe
 
 manual-testing.md
 cynthia.config.ts
-.audits/

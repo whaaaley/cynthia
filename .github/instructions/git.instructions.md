@@ -1,5 +1,4 @@
 ---
-applyTo: '**'
 ---
 
 Rule: Use conventional commit format: `<type>[optional scope]: <description>`
@@ -20,8 +19,8 @@ Reason: Easier to review, revert, and understand history
 Rule: Use body to explain what and why, not how
 Reason: Code shows how, commit message explains motivation
 
-Rule: Avoid adding automated tool attribution or metadata to commit messages
-Reason: Keep commit history clean and focused on human-readable content
+Rule: Avoid adding automated tool attribution, metadata, or AI assistant co-authors (opencode, copilot, windsurf, cursor) in commit messages
+Reason: Keep commit history clean and focused on human contributors
 
-Rule: Use `git reset --soft HEAD~1` to undo commits, never use `--hard`
-Reason: Preserves working directory changes and allows granular recommit
+Rule: Only use basic local git commands: add, commit, status, log, and reset --soft. No remote operations or branching.
+Reason: Keep git usage minimal and safe for basic version control
