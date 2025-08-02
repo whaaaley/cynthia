@@ -19,8 +19,8 @@ export const configSchema = z.object({
   // LLM configuration (maps directly to llm-exe useLlm calls)
   llm: z.object({
     provider: z.enum(providers).default('openai.gpt-4o-mini'),
-    options: z.object({}).passthrough().default({}),
-  }).default({}),
+    options: z.record(z.string(), z.unknown()).default({}),
+  }).default({ provider: 'openai.gpt-4o-mini', options: {} }),
 
   // Cynthia-specific
   maxRetries: z.number().min(0).max(10).default(3),
