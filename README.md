@@ -19,9 +19,8 @@ A code synthesis command line tool that brings structure to AI-powered developme
 ## Roadmap
 
 - [ ] Benchmarks and performance thresholds
-- [ ] Add more models + DeepSeek R1 by default (Use Unified AI SDK)
 - [ ] Add a journal feature similar to drizzle-journal (status, history, rollbacks)
-- [ ] Read test failures from stdout to improve next attempt
+- [ ] Test suggestions based on failed tests to ensure things go smoothly on fresh generations
 
 ## Dependencies
 
@@ -158,24 +157,11 @@ Customize code generation with personalized instructions.
 
 ### Setup
 
-```sh
-mkdir -p .vscode/instructions
-touch .vscode/instructions/cynthia.instructions.md
-```
-
-Add instructions, one per line:
-
-```
-Use functional programming patterns
-Use descriptive variable names
-Prefer map, filter, reduce over loops
-Use type guards for runtime checks
-Use switch for multiple conditions
-```
+Cynthia automatically loads instructions from `.github/instructions/copilot.instructions.md` in your project root.
 
 ### Behavior
 
-Cynthia searches for `.vscode/instructions/cynthia.instructions.md` by walking up the directory tree from the current working directory.
+Cynthia searches for `.github/instructions/copilot.instructions.md` by walking up the directory tree from the current working directory.
 Any instructions found are appended to the bottom of the prompt for each generation.
 This works from any subdirectory.
 
