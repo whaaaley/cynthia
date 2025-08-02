@@ -1,5 +1,6 @@
 import { findUp } from 'find-up-simple'
 import { z } from 'zod'
+import { env } from './env.ts'
 
 export const providers = [
   'openai.gpt-4o-mini',
@@ -29,13 +30,12 @@ export const configSchema = z.object({
 
 export type CynthiaConfig = z.infer<typeof configSchema>
 
-const oaiKey = Deno.env.get('OPENAI_API_KEY')
 const defaultConfig: CynthiaConfig = {
   llm: {
     provider: 'openai.gpt-4o-mini',
     options: {
       temperature: 0,
-      ...(oaiKey && { openAIApiKey: oaiKey }),
+      ...(env.OPENAI_API_KEY && { openAIApiKey: env.OPENAI_API_KEY }),
     },
   },
   maxRetries: 3,
