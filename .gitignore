@@ -1,5 +1,6 @@
 .audits/
 .cynthia/
+.plans/
 .secrets/
 .trash/
 tmp/
@@ -11,6 +12,7 @@ cyn
 cyn.sh
 cyn.exe
 
+live-testing/
 manual-testing.md
 cynthia.config.ts
 fibonacci.ts
