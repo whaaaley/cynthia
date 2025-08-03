@@ -27,6 +27,17 @@
       "models": {}
     }
   },
+  "mcp": {
+    "cynthia": {
+      "type": "local",
+      "command": [
+        "deno",
+        "run",
+        "-A",
+        "src/mcp.ts"
+      ]
+    }
+  },
   "mode": {
     "audit": {
       "prompt": "{file:./.github/instructions/audit.instructions.md}",
@@ -41,13 +52,15 @@
   "permission": {
     "bash": {
       "cd*": "allow",
-      "ls*": "allow",
-      "pwd*": "allow",
-      "git status*": "allow",
+      "deno check*": "allow",
+      "deno task test*": "allow",
+      "git add*": "allow",
       "git diff*": "allow",
       "git log*": "allow",
-      "deno task test*": "allow",
-      "deno check*": "allow",
+      "git status*": "allow",
+      "grep*": "allow",
+      "ls*": "allow",
+      "pwd*": "allow",
       "*": "ask"
     }
   }
