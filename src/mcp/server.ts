@@ -148,5 +148,6 @@ Please include:
 // TODO: Add a command for mcp and cli tool both to automatically create a test file
 // based on a description of the function
 
-server.start({ transportType: 'httpStream' })
+// server.start({ transportType: 'httpStream' })
+server.start({ transportType: 'stdio' })
 console.error(`Started Cynthia MCP server v${env.VERSION}`)
