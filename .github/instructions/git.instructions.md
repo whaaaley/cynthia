@@ -1,7 +1,7 @@
 Rule: Use conventional commit format: `<type>[optional scope]: <description>`
 Reason: Enables automated tooling and clear communication
 
-Rule: Keep subject under 50 characters, use present tense imperative, capitalize first word, no trailing punctuation
+Rule: Keep subject under 50 characters: present tense imperative, capitalized, no trailing punctuation
 Reason: Readable in git log and matches git's own conventions
 
 Rule: Use `feat:` for new features, `fix:` for bug fixes, `docs:` for documentation, `refactor:` for code restructuring, `test:` for testing, `chore:` for maintenance
@@ -28,7 +28,7 @@ Reason: Keep commit history clean and focused on human contributors
 Rule: Never include "Co-Authored-By" lines with opencode
 Reason: Explicitly prevents opencode attribution in commit history
 
-Rule: Only use basic local git commands: add, commit, status, log, and reset --soft. No remote operations or branching.
+Rule: Use only basic local git commands (add, commit, status, log, reset --soft, restore --staged) - no remote operations or branching
 Reason: Keep git usage minimal and safe for basic version control
 
 Rule: Never commit without first asking for explicit confirmation
