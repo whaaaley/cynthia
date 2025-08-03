@@ -1,7 +1,7 @@
-_trash/
 .audits/
 .cynthia/
 .secrets/
+.trash/
 tmp/
 
 .env

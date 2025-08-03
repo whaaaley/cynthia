@@ -47,6 +47,7 @@
       "git diff*": "allow",
       "git log*": "allow",
       "deno task test*": "allow",
+      "deno check*": "allow",
       "*": "ask"
     }
   }

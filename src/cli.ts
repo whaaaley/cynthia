@@ -26,6 +26,7 @@ import { createCommand } from './commands/create.ts'
 import { genCommand } from './commands/gen.ts'
 import { initCommand } from './commands/init.ts'
 import { testCommand } from './commands/test.ts'
+import { env } from './env.ts'
 
 const helpText = `
 Cynthia CLI
@@ -68,8 +69,7 @@ export const main = async (args: string[]) => {
   }
 
   if (parsedArgs.version) {
-    const denoConfig = JSON.parse(await Deno.readTextFile(new URL('../deno.json', import.meta.url)))
-    console.log(`Cynthia CLI ${denoConfig.version}`)
+    console.log(`Cynthia CLI ${env.VERSION}`)
     return
   }
 
