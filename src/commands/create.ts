@@ -17,10 +17,12 @@ export const createCommand = async (args: string[]) => {
     const content = createTestFileTemplate(filename)
     const file = new TextEncoder().encode(content)
 
-    await Deno.writeFile(`./${filename}.test.ts`, file, { create: true })
-    console.log(`Created ${filename}.test.ts`)
+    const testFileName = filename.endsWith('.test.ts') ? filename : `${filename}.test.ts`
+    await Deno.writeFile(`./${testFileName}`, file, { create: true })
+    console.log(`Created ${testFileName}`)
 
-    await createPlaceholder(filename)
+    const baseName = filename.replace(/\.test\.ts$/, '')
+    await createPlaceholder(baseName)
   } catch (e) {
     console.error('Error creating file:', e)
   }
