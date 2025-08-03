@@ -13,3 +13,5 @@ cyn.exe
 
 manual-testing.md
 cynthia.config.ts
+fibonacci.ts
+fibonacci.test.ts
