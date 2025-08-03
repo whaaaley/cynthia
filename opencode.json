@@ -57,6 +57,7 @@
       "git add*": "allow",
       "git diff*": "allow",
       "git log*": "allow",
+      "git rm*": "ask",
       "git status*": "allow",
       "grep*": "allow",
       "ls*": "allow",
