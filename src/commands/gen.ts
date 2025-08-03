@@ -23,7 +23,7 @@ export const codeBlockSchema = z.object({
     }),
 })
 
-export const genCommand = async (args: string[], session: MCPSession | null) => {
+export const genCommand = async (args: string[], session?: MCPSession | null) => {
   const path = args[0]
   if (!path) {
     console.error('Error: filepath is required')
@@ -39,8 +39,7 @@ export const genCommand = async (args: string[], session: MCPSession | null) => 
       return
     }
 
-    // Ensure test file has .test.ts extension for consistency across CLI and MCP
-    // This allows users to run `cyn gen fibonacci` instead of `cyn gen fibonacci.test.ts`
+    // Handle both base names and full test file names
     let testPath = path
     if (!testPath.endsWith('.test.ts')) {
       testPath = `${testPath}.test.ts`
@@ -120,14 +119,24 @@ export const genCommand = async (args: string[], session: MCPSession | null) => 
 
     const validateSuccess = (result: { testsPass: boolean }) => result.testsPass
 
-    await retryWithCallback({
-      operation: createAndTest,
-      isSuccess: validateSuccess,
-      maxRetries: config.maxRetries,
-      operationName: 'Agentic code generation and test validation',
-    })
+    try {
+      await retryWithCallback({
+        operation: createAndTest,
+        isSuccess: validateSuccess,
+        maxRetries: config.maxRetries,
+        operationName: 'Agentic code generation and test validation',
+      })
 
-    console.log('Code generation completed successfully!')
+      console.log('Code generation completed successfully!')
+    } catch (error) {
+      if (session) {
+        // MCP mode: log failure and continue with basic generation
+        console.error('Agentic code generation failed, continuing with basic generation:', error)
+      } else {
+        // CLI mode: let error propagate
+        throw error
+      }
+    }
   } catch (e) {
     console.error('Error generating file:', e)
   }
