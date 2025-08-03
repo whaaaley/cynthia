@@ -21,6 +21,8 @@ A code synthesis command line tool that brings structure to AI-powered developme
 - [ ] Benchmarks and performance thresholds
 - [ ] Add a journal feature similar to drizzle-journal (status, history, rollbacks)
 - [ ] Test suggestions based on failed tests to ensure things go smoothly on fresh generations
+- [ ] Command to write and update test files
+- [ ] Parse test output for retries
 
 ## Dependencies
 
